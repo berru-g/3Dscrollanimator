@@ -2,7 +2,7 @@
 // index.php
 require_once 'config.php';
 require_once 'auth.php';
-
+require_once 'header.php';
 // Vérifier si un projet doit être chargé
 $loadProjectId = $_GET['load_project'] ?? null;
 // DEBUG
@@ -132,7 +132,8 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
     <!-- Notifications Toast -->
     <div id="notification-container" class="notification-container"></div>
 
-    <header class="header">
+    <?php require_once 'header.php'; ?>
+    <!--<header class="header">
         <a href="index.php" class="logo">3D Scroll Animator</a>
 
         <nav class="nav-links">
@@ -143,7 +144,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
 
         <div class="auth-section">
             <?php if (Auth::isLoggedIn()): ?>
-                <!-- État connecté -->
+                
                 <div id="user-menu" class="user-menu">
                     <span class="user-avatar" id="user-avatar">
                         <?= strtoupper(substr($_SESSION['user_name'], 0, 1)) ?>
@@ -153,7 +154,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                     <a href="?logout" class="btn btn-secondary">Déconnexion</a>
                 </div>
             <?php else: ?>
-                <!-- État non connecté -->
+               
                 <div id="guest-menu" class="auth-buttons">
                     <button class="btn btn-secondary" onclick="showAuthModal()">
                         <i class="fas fa-sign-in-alt"></i> Connexion
@@ -161,7 +162,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                 </div>
             <?php endif; ?>
         </div>
-    </header>
+    </header>-->
 
     <!-- Modal d'Authentification simplifié -->
     <div id="auth-modal" class="auth-modal" style="display: none;">
@@ -214,7 +215,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                     </button>
                     <div class="input-group" style="margin-top: 10px; margin-left: 20px;">Rendre public
                         <label>
-                            <input type="checkbox" id="make-public"> 
+                            <input type="checkbox" id="make-public">
                         </label>
                     </div>
                 <?php else: ?>

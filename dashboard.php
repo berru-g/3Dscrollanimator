@@ -54,7 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 </head>
 
 <body>
-    <header class="header">
+    <?php require_once 'header.php'; ?>
+    <!--<header class="header">
         <a href="index.php" class="logo">3D Scroll Animator</a>
         <nav class="nav-links">
             <a href="index.php">Éditeur</a>
@@ -68,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
                 <a href="?logout" class="btn btn-secondary">Déconnexion</a>
             </div>
         </div>
-    </header>
+    </header>-->
 
     <main style="padding: 2rem; max-width: 1000px; margin: 0 auto;">
         <?php if (isset($_GET['success'])): ?>
