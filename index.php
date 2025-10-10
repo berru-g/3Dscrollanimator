@@ -2,7 +2,7 @@
 // index.php
 require_once 'config.php';
 require_once 'auth.php';
-require_once 'header.php';
+
 // Vérifier si un projet doit être chargé
 $loadProjectId = $_GET['load_project'] ?? null;
 // DEBUG
@@ -133,6 +133,22 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
     <div id="notification-container" class="notification-container"></div>
 
     <?php require_once 'header.php'; ?>
+
+    <!-- INITIALISATION DES VARIABLES AUTH POUR JAVASCRIPT -->
+    <script>
+        // Ces variables sont utilisées par scriptV2.js pour savoir si l'utilisateur est connecté
+        window.currentUser = <?= Auth::isLoggedIn() ? json_encode([
+            'id' => $_SESSION['user_id'],
+            'username' => $_SESSION['user_name'],
+            'email' => $_SESSION['user_email'],
+            'subscription' => $_SESSION['subscription']
+        ]) : 'null' ?>;
+        window.userSubscription = '<?= Auth::isLoggedIn() ? $_SESSION['subscription'] : 'free' ?>';
+
+        console.log('Auth initialized:', window.currentUser);
+    </script>
+
+
     <!--<header class="header">
         <a href="index.php" class="logo">3D Scroll Animator</a>
 

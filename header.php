@@ -113,7 +113,7 @@ require_once 'auth.php';
             display: flex;
             gap: 0.8rem;
         }
-
+/*
         .btn {
             padding: 0.6rem 1.2rem;
             border-radius: 25px;
@@ -145,7 +145,7 @@ require_once 'auth.php';
             border-color: var(--primary);
             transform: translateY(-2px);
         }
-
+*/
         /* Menu utilisateur */
         .user-menu {
             display: flex;
