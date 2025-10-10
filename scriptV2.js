@@ -1112,15 +1112,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // ======================================
-// AUTHENTIFICATION SIMPLIFIÉE
-// ======================================
-// ======================================
-// AUTHENTIFICATION - UNE SEULE SECTION
+// AUTHENTIFICATION ET AUTORISATION USER = FREE / PRO
 // ======================================
 
 let currentUser = window.currentUser || null;
-let userSubscription = window.userSubscription || 'free';
-
+let userSubscription = window.userSubscription || 'free'; // function a revoir car bug le deverrouillage en ligne mais fonctionne en local
 // Mettre à jour l'interface
 function updateUI() {
     const guestMenu = document.getElementById('guest-menu');
@@ -1131,10 +1127,10 @@ function updateUI() {
 
     console.log('updateUI() - currentUser:', currentUser);
 
-    if (currentUser) {
+    if (currentUser) {//connected
         if (guestMenu) guestMenu.style.display = 'none';
         if (userMenu) userMenu.style.display = 'flex';
-        if (codeGuest) codeGuest.style.display = 'none';
+        if (codeGuest) codeGuest.style.display = 'none'; // none de base
 
         if (userSubscription === 'pro') {
             if (codeFreeUser) codeFreeUser.style.display = 'none';
@@ -1143,7 +1139,7 @@ function updateUI() {
             if (codeFreeUser) codeFreeUser.style.display = 'block';
             if (codeProUser) codeProUser.style.display = 'none';
         }
-    } else {
+    } else {//deconnnected
         if (guestMenu) guestMenu.style.display = 'block';
         if (userMenu) userMenu.style.display = 'none';
         if (codeGuest) codeGuest.style.display = 'block';

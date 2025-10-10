@@ -246,17 +246,17 @@ require_once 'auth.php';
         <div class="header-left">
             <a href="index.php" class="logo">
                 <i class="fas fa-cube logo-icon"></i>
-                <span>ScrollForge3D</span>
+                <span>3DScrollAnimate</span>
             </a>
             
             <div class="nav-icons">
                 <a href="index.php" class="nav-icon <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>">
                     <i class="fas fa-edit"></i>
-                    <span>Éditeur</span>
+                    <span>Edit</span>
                 </a>
                 <a href="gallery.php" class="nav-icon <?= basename($_SERVER['PHP_SELF']) == 'gallery.php' ? 'active' : '' ?>">
                     <i class="fas fa-images"></i>
-                    <span>Galerie</span>
+                    <span>Trending</span>
                 </a>
             </div>
         </div>
@@ -287,7 +287,7 @@ require_once 'auth.php';
                         
                         <a href="?logout" class="user-dropdown-item">
                             <i class="fas fa-sign-out-alt"></i>
-                            <span>Déconnexion</span>
+                            <span>Log Out</span>
                         </a>
                     </div>
                 </div>
@@ -295,11 +295,11 @@ require_once 'auth.php';
                 <div class="auth-buttons">
                     <a href="login.php" class="btn btn-secondary">
                         <i class="fas fa-sign-in-alt"></i>
-                        <span>Connexion</span>
+                        <span>Log In</span>
                     </a>
                     <a href="register.php" class="btn btn-primary">
                         <i class="fas fa-user-plus"></i>
-                        <span>Inscription</span>
+                        <span>Sign Up</span>
                     </a>
                 </div>
             <?php endif; ?>
