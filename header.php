@@ -2,9 +2,11 @@
 // header_start.php
 require_once 'config.php';
 require_once 'auth.php';
+require_once 'PointsManager.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,6 +41,7 @@ require_once 'auth.php';
 
         .modern-header {
             background: rgba(21, 21, 23, 0.95);
+            /*#0a0718*/
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
             padding: 0.8rem 2rem;
@@ -56,10 +59,16 @@ require_once 'auth.php';
             gap: 2rem;
         }
 
+        .header-left img {
+            height: 40px;
+            width: auto;
+            border-radius: 100%;
+        }
+
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            color: var(--rose);
+            color: var(--dark);
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -95,8 +104,8 @@ require_once 'auth.php';
         }
 
         .nav-icon.active {
-            background: var(--primary);
-            color: var(--dark);
+            background: rgba(241, 241, 241, 0.14);
+            color: var(--white);
         }
 
         .nav-icon i {
@@ -113,7 +122,8 @@ require_once 'auth.php';
             display: flex;
             gap: 0.8rem;
         }
-/*
+
+        /*
         .btn {
             padding: 0.6rem 1.2rem;
             border-radius: 25px;
@@ -225,66 +235,105 @@ require_once 'auth.php';
             .modern-header {
                 padding: 0.8rem 1rem;
             }
-            
+
             .nav-icon span {
                 display: none;
             }
-            
+
+            .header-left span {
+                display: none;
+            }
+
+            .auth-buttons span {
+                display: none;
+            }
+
             .nav-icon {
                 padding: 0.6rem;
             }
-            
+
             .btn {
                 padding: 0.6rem 1rem;
                 font-size: 0.8rem;
             }
         }
+
+        /* system de points */
+        .user-points {
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
+        .points-info {
+            background: var(--grey-light);
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            text-align: center;
+            /*border-left: 4px solid var(--primary);*/
+        }
+
+        .points-cost {
+            color: var(--rose);
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
     <header class="modern-header">
         <div class="header-left">
-            <a href="index.php" class="logo">
-                <i class="fas fa-cube logo-icon"></i>
+            <a href="landing.html" class="logo">
+                <img src="../img/mascotte-code.png">
                 <span>3DScrollAnimate</span>
             </a>
-            
+
             <div class="nav-icons">
-                <a href="index.php" class="nav-icon <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>">
-                    <i class="fas fa-edit"></i>
+                <a href="index.php"
+                    class="nav-icon <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>">
+                    <i class="fas fa-pen"></i>
                     <span>Edit</span>
                 </a>
-                <a href="gallery.php" class="nav-icon <?= basename($_SERVER['PHP_SELF']) == 'gallery.php' ? 'active' : '' ?>">
-                    <i class="fas fa-images"></i>
-                    <span>Trending</span>
+                <a href="gallery.php"
+                    class="nav-icon <?= basename($_SERVER['PHP_SELF']) == 'gallery.php' ? 'active' : '' ?>">
+                    <i class="fa-solid fa-folder"></i>
+                    <span>Explore</span>
                 </a>
             </div>
         </div>
-        
+
         <div class="header-right">
             <?php if (Auth::isLoggedIn()): ?>
                 <div class="user-menu">
                     <div class="user-avatar">
                         <?= strtoupper(substr($_SESSION['user_name'], 0, 1)) ?>
                     </div>
-                    
+
                     <div class="user-dropdown">
                         <div class="user-dropdown-item">
-                            <i class="fas fa-user"></i>
-                            <span><?= htmlspecialchars($_SESSION['user_name']) ?></span>
+
+                            <div class="points-info">
+                                <span><?= htmlspecialchars($_SESSION['user_name']) ?></span>
+                                <span id="current-points"><?= $_SESSION['user_points'] ?? 200 ?></span> 🪙
+                            </div>
                         </div>
-                        
+
                         <div class="user-dropdown-divider"></div>
-                        
+
                         <a href="dashboard.php" class="user-dropdown-item">
-                            <i class="fas fa-tachometer-alt"></i>
-                            <span>Dashboard</span>
+                            <i class="fas fa-user"></i>
+                            <span>Profil</span>
                         </a>
-                        
-                        
-                        
+
+
+
                         <div class="user-dropdown-divider"></div>
-                        
+
                         <a href="?logout" class="user-dropdown-item">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Log Out</span>
@@ -307,4 +356,3 @@ require_once 'auth.php';
     </header>
 
     <main>
-        
