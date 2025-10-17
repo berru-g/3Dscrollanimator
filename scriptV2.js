@@ -120,9 +120,105 @@ function showAlert(message, type = 'info') {
     notify[type](message, titles[type]);
 }
 
+// animations  Système d'animations de gains
+class GainAnimator {
+    constructor() {
+        this.container = null;
+        this.init();
+    }
+
+    init() {
+        // Créer le container des animations
+        this.container = document.createElement('div');
+        this.container.className = 'gain-animation';
+        document.body.appendChild(this.container);
+    }
+
+    // Animation principale
+    showGain(amount, type = 'points', message = null) {
+        // Nettoyer les anciennes animations
+        this.clearAnimations();
+
+        // Créer les particules
+        this.createParticles(amount, type);
+
+        // Afficher la notification
+        if (message) {
+            setTimeout(() => {
+                notify.success(message);
+            }, 800);
+        }
+
+        // Animer le compteur si présent
+        this.animateCounter();
+    }
+
+    createParticles(amount, type) {
+        const symbols = {
+            points: '💎',
+            gems: '✨', 
+            premium: '👑',
+            coin: '🪙',
+            star: '⭐'
+        };
+
+        const symbol = symbols[type] || '💎';
+        const text = `+${amount}${symbol}`;
+
+        // Créer 3 particules pour l'effet d'explosion
+        for (let i = 0; i < 3; i++) {
+            const particle = document.createElement('div');
+            particle.className = `gain-particle ${type}`;
+            particle.textContent = text;
+            particle.style.setProperty('--index', i);
+            
+            this.container.appendChild(particle);
+        }
+
+        // Nettoyer après l'animation
+        setTimeout(() => this.clearAnimations(), 2000);
+    }
+
+    animateCounter() {
+        // Animer le compteur de points dans le header
+        const counter = document.querySelector('.user-points, .points-counter, [class*="points"]');
+        if (counter) {
+            counter.classList.add('pulse');
+            setTimeout(() => counter.classList.remove('pulse'), 600);
+        }
+    }
+
+    clearAnimations() {
+        if (this.container) {
+            this.container.innerHTML = '';
+        }
+    }
+
+    // Méthodes pratiques
+    showPoints(amount, message = null) {
+        this.showGain(amount, 'points', message);
+    }
+
+    showGems(amount, message = null) {
+        this.showGain(amount, 'gems', message);
+    }
+
+    showPremium(amount, message = null) {
+        this.showGain(amount, 'premium', message);
+    }
+}
+
+// Instance globale
+const gainAnimator = new GainAnimator();
+
+// Snippets rapides à utiliser partout
+window.showPointsAnimation = (amount, message) => gainAnimator.showPoints(amount, message);
+window.showGemsAnimation = (amount, message) => gainAnimator.showGems(amount, message);
+window.showPremiumAnimation = (amount, message) => gainAnimator.showPremium(amount, message);
 
 
-// Variables globales 3D
+
+// Variables globales 3D THREEJS
 let scene, camera, renderer, controls;
 let model = null;
 let keyframes = [];
@@ -521,36 +617,23 @@ function updateModelByScroll(percentage) {
     }
 }
 
-// debug save
+/*
+// SAVE LOAD PROJECTS & points MANAGEMENT
 async function saveProject() {
     console.log("🔧 saveProject() appelée");
-    
+
     if (!currentUser) {
         console.log("❌ Utilisateur non connecté - affichage modal");
         showAuthModal();
         return;
     }
 
-    // Vérifier et déduire les points
-    const pointsCheck = await checkAndDeductPoints('save');
-    if (!pointsCheck.success) {
-        notify.error(pointsCheck.message, 'Points insuffisants');
-        
-        // Proposer d'acheter des points
-        if (confirm("Points insuffisants ! Voulez-vous acheter plus de points ?")) {
-            window.location.href = 'dashboard.php#points';
-        }
-        return;
-    }
-
     const title = prompt('Donnez un titre à votre projet:', 'Mon animation 3D');
-    if (!title) {
-        // Remettre les points si annulation
-        await addPoints(50);
-        return;
-    }
+    if (!title) return;
 
     const description = prompt('Description (optionnelle):', '');
+    const makePublicCheckbox = document.getElementById('make-public');
+    const isPublic = makePublicCheckbox && makePublicCheckbox.checked;
 
     const projectData = {
         keyframes: keyframes,
@@ -573,8 +656,7 @@ async function saveProject() {
         formData.append('title', title);
         formData.append('description', description);
         formData.append('model_data', JSON.stringify(projectData));
-        const makePublicCheckbox = document.getElementById('make-public');
-        formData.append('is_public', makePublicCheckbox && makePublicCheckbox.checked ? 'true' : 'false');
+        formData.append('is_public', isPublic ? 'true' : 'false');
 
         console.log("🔧 Envoi vers api.php...");
 
@@ -589,21 +671,170 @@ async function saveProject() {
         console.log("🔧 Résultat API:", result);
 
         if (result.success) {
-            // Mettre à jour l'affichage des points
-            updateUserPointsDisplay(pointsCheck.new_balance);
-            notify.success('Projet sauvegardé avec succès! -50 🪙', 'Sauvegarde');
+            // ✅ DONNER 10 POINTS au lieu d'en enlever
+            const pointsResult = await addPoints(10);
+            
+            if (pointsResult.success) {
+                // Animation de gain de points
+                showPointsAnimation(10, 'Projet sauvegardé !');
+                
+                // Message différent selon public/privé
+                const message = isPublic 
+                    ? 'Projet publié avec succès ! +10 💎' 
+                    : 'Projet sauvegardé en privé ! +10 💎';
+                    
+                notify.success(message, 'Sauvegarde');
+                
+                // Mettre à jour l'affichage des points
+                refreshUserPoints();
+            } else {
+                notify.success('Projet sauvegardé ! (erreur attribution points)', 'Sauvegarde');
+            }
         } else {
-            // Remettre les points en cas d'erreur
-            await addPoints(50);
             notify.error('Erreur lors de la sauvegarde', result.message);
         }
     } catch (error) {
-        // Remettre les points en cas d'erreur réseau
-        await addPoints(50);
         console.error('❌ Erreur sauvegarde:', error);
         notify.error('Erreur réseau', 'Impossible de sauvegarder');
     }
 }
+*/
+// Remplacer la fonction saveProject() existante
+function openSaveModal() {
+    console.log("🔧 openSaveModal() appelée");
+    
+    if (!currentUser) {
+        showAuthModal();
+        return;
+    }
+    
+    // Réinitialiser la modal
+    document.getElementById('project-title').value = '';
+    document.getElementById('project-description').value = '';
+    document.getElementById('title-chars').textContent = '0';
+    document.getElementById('desc-chars').textContent = '0';
+    
+    // Synchroniser la checkbox avec celle de la sidebar
+    const sidebarCheckbox = document.getElementById('make-public');
+    const modalCheckbox = document.getElementById('modal-make-public');
+    if (sidebarCheckbox && modalCheckbox) {
+        modalCheckbox.checked = sidebarCheckbox.checked;
+    }
+    
+    // Afficher la modal
+    document.getElementById('save-project-modal').style.display = 'flex';
+    
+    // Focus sur le champ titre
+    setTimeout(() => {
+        document.getElementById('project-title').focus();
+    }, 100);
+}
+
+function closeSaveModal() {
+    document.getElementById('save-project-modal').style.display = 'none';
+}
+
+// Compteurs de caractères
+document.getElementById('project-title').addEventListener('input', function() {
+    document.getElementById('title-chars').textContent = this.value.length;
+});
+
+document.getElementById('project-description').addEventListener('input', function() {
+    document.getElementById('desc-chars').textContent = this.value.length;
+});
+
+// Soumission du formulaire
+async function confirmSaveProject() {
+    const title = document.getElementById('project-title').value.trim();
+    const description = document.getElementById('project-description').value.trim();
+    const isPublic = document.getElementById('modal-make-public').checked;
+    
+    if (!title) {
+        notify.error('Veuillez donner un titre à votre projet', 'Titre requis');
+        document.getElementById('project-title').focus();
+        return;
+    }
+    
+    // Synchroniser avec la checkbox de la sidebar
+    const sidebarCheckbox = document.getElementById('make-public');
+    if (sidebarCheckbox) {
+        sidebarCheckbox.checked = isPublic;
+    }
+    
+    await saveProjectData(title, description, isPublic);
+    closeSaveModal();
+}
+
+// Fonction de sauvegarde principale
+async function saveProjectData(title, description, isPublic) {
+    console.log("🔧 saveProjectData() appelée");
+
+    const projectData = {
+        keyframes: keyframes,
+        modelSettings: {
+            position: model ? { x: model.position.x, y: model.position.y, z: model.position.z } : { x: 0, y: 0, z: 0 },
+            rotation: model ? { x: model.rotation.x, y: model.rotation.y, z: model.rotation.z } : { x: 0, y: 0, z: 0 },
+            scale: model ? { x: model.scale.x, y: model.scale.y, z: model.scale.z } : { x: 1, y: 1, z: 1 }
+        },
+        camera: {
+            position: camera ? { x: camera.position.x, y: camera.position.y, z: camera.position.z } : { x: 5, y: 5, z: 5 }
+        },
+        timestamp: new Date().toISOString()
+    };
+
+    try {
+        const formData = new FormData();
+        formData.append('action', 'save_project');
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('model_data', JSON.stringify(projectData));
+        formData.append('is_public', isPublic ? 'true' : 'false');
+
+        const response = await fetch('api.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            const pointsResult = await addPoints(10);
+            
+            if (pointsResult.success) {
+                showPointsAnimation(10, 'Projet sauvegardé !');
+                
+                const message = isPublic 
+                    ? 'Projet publié avec succès ! +10 💎' 
+                    : 'Projet sauvegardé en privé ! +10 💎';
+                    
+                notify.success(message, 'Sauvegarde');
+                refreshUserPoints();
+            } else {
+                notify.success('Projet sauvegardé ! (erreur attribution points)', 'Sauvegarde');
+            }
+        } else {
+            notify.error('Erreur lors de la sauvegarde', result.message);
+        }
+    } catch (error) {
+        console.error('❌ Erreur sauvegarde:', error);
+        notify.error('Erreur réseau', 'Impossible de sauvegarder');
+    }
+}
+
+// Fermer la modal en cliquant à l'extérieur
+document.getElementById('save-project-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeSaveModal();
+    }
+});
+
+// Soumission avec Enter
+document.getElementById('project-title').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        confirmSaveProject();
+    }
+});
+
 // === NOUVELLES FONCTIONS POUR LA GESTION DES POINTS ===
 
 // Fonctions de gestion des points
@@ -616,7 +847,7 @@ async function checkAndDeductPoints(actionType) {
             },
             body: `action=deduct_points&action_type=${actionType}`
         });
-        
+
         return await response.json();
     } catch (error) {
         console.error('Erreur déduction points:', error);
@@ -633,7 +864,7 @@ async function addPoints(points) {
             },
             body: `action=add_points&points=${points}`
         });
-        
+
         return await response.json();
     } catch (error) {
         console.error('Erreur ajout points:', error);
@@ -645,29 +876,58 @@ function updateUserPointsDisplay(newPoints) {
     // Mettre à jour l'affichage dans le header
     const pointsElement = document.getElementById('user-points');
     if (pointsElement) {
-        pointsElement.textContent = `🪙 ${newPoints}`;
+        pointsElement.textContent = `💎 ${newPoints}`;
     }
-    
+
     // Mettre à jour l'affichage dans la section points-info
     const currentPointsElement = document.getElementById('current-points');
     if (currentPointsElement) {
         currentPointsElement.textContent = newPoints;
     }
-    
+
     // Mettre à jour la variable currentUser
     if (currentUser) {
         currentUser.points = newPoints;
     }
 }
 
+// Bonus de connexion quotidienne - À appeler au chargement de la page
+async function claimDailyBonus() {
+    if (!currentUser) return;
+
+    try {
+        const response = await fetch('api.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'action=daily_login_bonus'
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            notify.success('Bonus quotidien: +10 💎', 'Récompense');
+            showPointsAnimation(10, 'Bonus quotidien reçu!');
+            refreshUserPoints();
+        }
+    } catch (error) {
+        console.error('Erreur bonus quotidien:', error);
+    }
+}
+
+// Au chargement de la page pour les utilisateurs connectés
+document.addEventListener('DOMContentLoaded', function () {
+    if (currentUser) {
+        setTimeout(claimDailyBonus, 2000); // Attendre 2s après le chargement
+    }
+});
+
 // Fonction pour récupérer le solde actuel
 async function refreshUserPoints() {
     if (!currentUser) return;
-    
+
     try {
         const response = await fetch('api.php?action=get_user_points');
         const result = await response.json();
-        
+
         if (result.success) {
             updateUserPointsDisplay(result.points);
         }
@@ -677,7 +937,7 @@ async function refreshUserPoints() {
 }
 
 
-// Remplacer l'ancien événement par celui-ci :
+// Open with codepen :
 document.getElementById("open-codepen").addEventListener("click", async () => {
     if (!currentUser) {
         showAuthModal();
@@ -688,10 +948,10 @@ document.getElementById("open-codepen").addEventListener("click", async () => {
     const pointsCheck = await checkAndDeductPoints('codepen');
     if (!pointsCheck.success) {
         notify.error(pointsCheck.message, 'Points insuffisants');
-        
+
         // Proposer d'acheter des points
         if (confirm("Points insuffisants ! Voulez-vous acheter plus de points ?")) {
-            window.location.href = 'dashboard.php#points';
+            window.location.href = 'tarif.php';
         }
         return;
     }
@@ -727,7 +987,7 @@ document.getElementById("open-codepen").addEventListener("click", async () => {
     form.submit();
     document.body.removeChild(form);
 
-    notify.success('Export CodePen réussi! -50 🪙', 'Export');
+    notify.success('Export CodePen réussi! -50 💎', 'Export');
 });
 
 
@@ -882,11 +1142,23 @@ function generateHTMLCode() {
             <h1>3D Scroll Animator</h1>
             <p>Faites défiler pour voir l'animation</p>
         </header>
+      
+      <div class="intro">
+            <h2>Hello word</h2>
+            <p>Bienvenue sur mon site</p>
+        <img src="https://gael-berru.com/img/mascotte-easy2.png">
+        <p>Crée par <strong>"votre nom"</strong> avec <a href="https://gael-berru.com/3Dscrollanimator/">3D scroll animator.com</a></p>
+        </div>
         
         <div class="scroll-space"></div>
+      
+      <div class="intro">
+            <h2>Ton titre</h2>
+            <p>sub title</p>
+        </div>
         
         <footer>
-            <p>Créé avec l'Éditeur 3D Scroll Animator No-Code by <a href="https://gael-berru.com/editor3D/">berru-g</a></p>
+            <p>Créé avec l'Éditeur 3D Scroll Animator No-Code by <a href="https://gael-berru.com/3Dscrollanimator/">berru-g</a></p>
         </footer>
     </div>
 
@@ -899,7 +1171,7 @@ function generateHTMLCode() {
 }
 
 function generateCSSCode() {
-    return `/* Styles pour l'animation 3D avec scroll */
+    return `/* Code généré par https://gael-berru.com/3Dscrollanimator/ Éditeur 3D No-Code */
 * {
     margin: 0;
     padding: 0;
@@ -908,7 +1180,7 @@ function generateCSSCode() {
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #313131 0%, #515151 100%);
+    background: linear-gradient(135deg, #cba6f7 30%, #f5c2e7 100%);
     color: #cdd6f4;
     overflow-x: hidden;
 }
@@ -916,6 +1188,7 @@ body {
 .container {
     position: relative;
     z-index: 1;
+  background: transparent;
 }
 
 header {
@@ -941,9 +1214,35 @@ header p {
     font-size: 1.2rem;
     opacity: 0.8;
 }
+.intro {
+  height: 100vh;
+  max-width: 300px;
+    display: flex;
+  margin: 0 auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+  border: 1px solid grey;
+  border-radius: 12px;
+}
+
+.intro img{
+  display: flex;
+  margin: 0 auto;
+  width: 250px;
+  border-radius: 8px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.intro a {
+  text-decoration: none;
+  color: #ab9ff2;
+}
 
 .scroll-space {
-    height: 200vh;
+    height: 100vh;
     position: relative;
 }
 
@@ -968,7 +1267,7 @@ canvas {
     width: 100%;
     height: 100%;
     z-index: 0;
-    background: linear-gradient(135deg, #515151 0%, #212121 100%);
+    background: linear-gradient(135deg, #cba6f7 50%, #f5c2e7 100%);
 }
 
 /* Responsive */
@@ -1109,7 +1408,226 @@ function setupEventListeners() {
     });
 }
 
+// Fonction pour charger un modèle de test
+function loadTestModel() {
+    console.log(' Chargement du modèle test...');
 
+    const loader = new THREE.GLTFLoader();
+
+    // URL du modèle test (drone.glb depuis ton repo GitHub)
+    const modelUrl = 'https://raw.githubusercontent.com/berru-g/berru-g/refs/heads/main/img/drone.glb';
+
+    // Afficher le loading
+    const loadingElement = document.getElementById('loading');
+    if (loadingElement) {
+        loadingElement.style.display = 'block';
+        loadingElement.textContent = 'Chargement du modèle test...';
+    }
+
+    notify.info('Chargement du modèle drone de test...', 'Modèle Test');
+
+    loader.load(
+        modelUrl,
+        // Succès
+        function (gltf) {
+            console.log('✅ Modèle test chargé avec succès');
+
+            // Cacher le loading
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+            }
+
+            handleLoadedModel(gltf.scene);
+            notify.success('Modèle test chargé !', 'Succès');
+
+            // Ajouter quelques keyframes d'exemple automatiquement
+            setTimeout(() => {
+                addExampleKeyframes();
+            }, 1000);
+        },
+        // Progression
+        function (xhr) {
+            if (loadingElement) {
+                const percent = Math.round((xhr.loaded / xhr.total) * 100);
+                loadingElement.textContent = `Chargement du modèle test... ${percent}%`;
+            }
+        },
+        // Erreur
+        function (error) {
+            console.error('❌ Erreur chargement modèle test:', error);
+
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+            }
+
+            notify.error('Erreur de chargement du modèle test', 'Erreur');
+
+            // Fallback: créer un modèle simple
+            createFallbackModel();
+        }
+    );
+}
+
+// Fonction pour ajouter des keyframes d'exemple
+function addExampleKeyframes() {
+    if (!model || keyframes.length > 0) return;
+
+    console.log('➕ Ajout des keyframes d\'exemple...');
+
+    // Keyframe à 0%
+    model.position.set(0, 0, 0);
+    model.rotation.set(0, 0, 0);
+    model.scale.set(1, 1, 1);
+
+    let keyframe = {
+        percentage: 0,
+        position: { x: 0, y: 0, z: 0 },
+        rotation: { x: 0, y: 0, z: 0 },
+        scale: { x: 1, y: 1, z: 1 }
+    };
+    keyframes.push(keyframe);
+
+    // Keyframe à 25%
+    keyframe = {
+        percentage: 25,
+        position: { x: 2, y: 1, z: -1 },
+        rotation: { x: 0, y: Math.PI / 4, z: 0 },
+        scale: { x: 1.2, y: 1.2, z: 1.2 }
+    };
+    keyframes.push(keyframe);
+
+    // Keyframe à 50%
+    keyframe = {
+        percentage: 50,
+        position: { x: 0, y: 2, z: -2 },
+        rotation: { x: Math.PI / 6, y: Math.PI / 2, z: 0 },
+        scale: { x: 0.8, y: 0.8, z: 0.8 }
+    };
+    keyframes.push(keyframe);
+
+    // Keyframe à 75%
+    keyframe = {
+        percentage: 75,
+        position: { x: -2, y: 1, z: -1 },
+        rotation: { x: 0, y: Math.PI * 1.5, z: Math.PI / 8 },
+        scale: { x: 1.1, y: 1.1, z: 1.1 }
+    };
+    keyframes.push(keyframe);
+
+    // Keyframe à 100%
+    keyframe = {
+        percentage: 100,
+        position: { x: 0, y: 0, z: 0 },
+        rotation: { x: 0, y: Math.PI * 2, z: 0 },
+        scale: { x: 1, y: 1, z: 1 }
+    };
+    keyframes.push(keyframe);
+
+    // Mettre à jour l'interface
+    updateKeyframesList();
+    updateRulerMarkers();
+    generateCode();
+
+    // Positionner à 0%
+    updateRulerPosition(0);
+
+    notify.success('Keyframes d\'exemple ajoutées !', 'Animation Prête');
+    console.log('✅ Keyframes d\'exemple ajoutées');
+}
+
+// Fonction de fallback si le modèle distant échoue
+function createFallbackModel() {
+    console.log('🔄 Création d\'un modèle de fallback...');
+
+    // Créer un groupe pour un modèle plus complexe
+    const modelGroup = new THREE.Group();
+
+    // Corps principal
+    const bodyGeometry = new THREE.CylinderGeometry(0.5, 0.3, 1, 8);
+    const bodyMaterial = new THREE.MeshStandardMaterial({
+        color: 0x4CAF50,
+        metalness: 0.3,
+        roughness: 0.4
+    });
+    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+    body.rotation.x = Math.PI / 2;
+    modelGroup.add(body);
+
+    // Hélices
+    const propellerGeometry = new THREE.BoxGeometry(2, 0.1, 0.3);
+    const propellerMaterial = new THREE.MeshStandardMaterial({
+        color: 0x2196F3
+    });
+
+    for (let i = 0; i < 4; i++) {
+        const propeller = new THREE.Mesh(propellerGeometry, propellerMaterial);
+        const angle = (i / 4) * Math.PI * 2;
+        propeller.position.set(
+            Math.cos(angle) * 0.8,
+            Math.sin(angle) * 0.8,
+            0
+        );
+        propeller.rotation.z = angle;
+        modelGroup.add(propeller);
+
+        // Support d'hélice
+        const supportGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.8, 6);
+        const supportMaterial = new THREE.MeshStandardMaterial({
+            color: 0x607D8B
+        });
+        const support = new THREE.Mesh(supportGeometry, supportMaterial);
+        support.position.set(
+            Math.cos(angle) * 0.4,
+            Math.sin(angle) * 0.4,
+            0
+        );
+        support.rotation.z = angle + Math.PI / 2;
+        modelGroup.add(support);
+    }
+
+    // Caméra/objectif
+    const cameraGeometry = new THREE.SphereGeometry(0.2, 8, 6);
+    const cameraMaterial = new THREE.MeshStandardMaterial({
+        color: 0x000000
+    });
+    const camera = new THREE.Mesh(cameraGeometry, cameraMaterial);
+    camera.position.set(0, 0, 0.6);
+    modelGroup.add(camera);
+
+    // Pattes d'atterrissage
+    const legGeometry = new THREE.CylinderGeometry(0.03, 0.03, 0.6, 6);
+    const legMaterial = new THREE.MeshStandardMaterial({
+        color: 0x795548
+    });
+
+    const legPositions = [
+        { x: 0.3, y: 0.3, z: -0.5 },
+        { x: -0.3, y: 0.3, z: -0.5 },
+        { x: 0.3, y: -0.3, z: -0.5 },
+        { x: -0.3, y: -0.3, z: -0.5 }
+    ];
+
+    legPositions.forEach(pos => {
+        const leg = new THREE.Mesh(legGeometry, legMaterial);
+        leg.position.set(pos.x, pos.y, pos.z);
+        leg.rotation.x = Math.PI / 4;
+        modelGroup.add(leg);
+    });
+
+    handleLoadedModel(modelGroup);
+    notify.info('Modèle drone généré localement', 'Fallback');
+
+    // Ajouter les keyframes d'exemple
+    setTimeout(() => {
+        addExampleKeyframes();
+    }, 500);
+}
+
+// S'assurer que le bouton est connecté
+document.addEventListener('DOMContentLoaded', function () {
+    // Le bouton est déjà connecté via onclick="loadTestModel()" dans ton HTML
+    console.log('✅ Fonction loadTestModel() prête');
+});
 
 // Charger un projet
 async function loadProject(projectId) {
@@ -1297,10 +1815,10 @@ function updateUI() {
 
 // Gestion de l'achat de points
 document.querySelectorAll('.buy-points').forEach(button => {
-    button.addEventListener('click', async function() {
+    button.addEventListener('click', async function () {
         const packElement = this.closest('.point-pack');
         const packId = packElement.getAttribute('data-pack-id');
-        
+
         try {
             const response = await fetch('api.php', {
                 method: 'POST',
@@ -1309,16 +1827,16 @@ document.querySelectorAll('.buy-points').forEach(button => {
                 },
                 body: `action=create_checkout_session&pack_id=${packId}`
             });
-            
+
             const result = await response.json();
-            
+
             if (result.success) {
                 // Rediriger vers Stripe Checkout
                 const stripe = Stripe('pk_test_ta_cle_publique');
                 const { error } = await stripe.redirectToCheckout({
                     sessionId: result.sessionId
                 });
-                
+
                 if (error) {
                     notify.error('Erreur de redirection', error.message);
                 }
@@ -1336,16 +1854,17 @@ document.querySelectorAll('.buy-points').forEach(button => {
 async function checkPaymentStatus() {
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session_id');
-    
+
     if (sessionId) {
         try {
             const response = await fetch(`api.php?action=check_payment&session_id=${sessionId}`);
             const result = await response.json();
-            
+
             if (result.success) {
-                notify.success(`Achat réussi ! +${result.points_added} 🪙`, 'Points ajoutés');
+                notify.success(`Achat réussi ! +${result.points_added} 💎`, 'Points ajoutés');
                 updateUserPointsDisplay(result.new_balance);
-                
+                showPointsAnimation('Points ajoutés pour la sauvegarde !');
+
                 // Nettoyer l'URL
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
@@ -1354,6 +1873,8 @@ async function checkPaymentStatus() {
         }
     }
 }
+
+
 
 
 
@@ -1368,11 +1889,11 @@ function closeAuthModal() {
 }
 
 // Au chargement
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM loaded - currentUser:', currentUser);
     updateUI();
     checkPaymentStatus();
-    
+
     // Vérifier si on doit charger un projet
     const urlParams = new URLSearchParams(window.location.search);
     const loadProjectId = urlParams.get('load_project');
@@ -1383,7 +1904,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Notification de mise à jour
+notify.success('Merci de patienter pour tout bug rencontré', 'Mise à jour');
+
 // 🖱️ Fermer la modal en cliquant à l'extérieur
-document.getElementById('auth-modal').addEventListener('click', function(e) {
+document.getElementById('auth-modal').addEventListener('click', function (e) {
     if (e.target === this) closeAuthModal();
 });

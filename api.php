@@ -3,6 +3,7 @@
 require_once 'auth.php';
 require_once 'projects.php';
 require_once 'PointsManager.php';
+require_once 'RewardSystem.php';
 
 header('Content-Type: application/json');
 
@@ -84,6 +85,28 @@ switch ($action) {
         echo json_encode(['success' => $success, 'message' => $success ? 'Commentaire ajouté' : 'Erreur']);
         break;
 
+
+    case 'daily_login_bonus':
+        if (!Auth::isLoggedIn()) {
+            echo json_encode(['success' => false, 'message' => 'Non connecté']);
+            exit;
+        }
+
+        $result = RewardSystem::addDailyLogin($_SESSION['user_id']);
+        echo json_encode($result);
+        break;
+
+    case 'social_share':
+        if (!Auth::isLoggedIn()) {
+            echo json_encode(['success' => false, 'message' => 'Non connecté']);
+            exit;
+        }
+
+        $platform = $_POST['platform'] ?? 'generic';
+        $result = RewardSystem::addSocialSharePoints($_SESSION['user_id'], $platform);
+        echo json_encode($result);
+        break;
+
     // === GESTION DES POINTS (POST) ===
     case 'deduct_points':
         error_log("=== DEDUCT_POINTS CALLED ===");
@@ -159,4 +182,5 @@ switch ($action) {
         echo json_encode(['success' => false, 'message' => 'Action inconnue: ' . $action]);
         break;
 }
+
 ?>

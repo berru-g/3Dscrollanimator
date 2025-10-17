@@ -158,7 +158,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
             <span class="user-name" id="user-name">
                 <?= htmlspecialchars($_SESSION['user_name']) ?>
                 <span class="user-points" id="user-points">
-                    🪙 <?= $_SESSION['user_points'] ?? 200 ?>
+                    💎 <?= $_SESSION['user_points'] ?? 200 ?>
                 </span>
             </span>
             <a href="dashboard.php" class="btn btn-secondary">Dashboard</a>
@@ -231,12 +231,193 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
         </div>
     </div>
 
+    <!-- Modal de sauvegarde de projet -->
+    <div id="save-project-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sauvegarder le projet</h3>
+                <button class="close-btn" onclick="closeSaveModal()">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="project-title">Titre du projet *</label>
+                    <input type="text" id="project-title" placeholder="Mon animation 3D" maxlength="100">
+                    <div class="char-count"><span id="title-chars">0</span>/100</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="project-description">Description (optionnelle)</label>
+                    <textarea id="project-description" placeholder="Décrivez votre projet..." rows="3"
+                        maxlength="500"></textarea>
+                    <div class="char-count"><span id="desc-chars">0</span>/500</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="modal-make-public">
+                        <span class="checkmark"></span>
+                        Rendre ce projet public
+                    </label>
+                    <small style="color: var(--text-light); margin-top: 0.5rem; display: block;">
+                        Contribué dans la communauté
+                    </small>
+                </div>
+
+                <div class="reward-notice">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--accent);">
+                        <span>🎁</span>
+                        <strong>Bonus : +10 points pour chaque sauvegarde !</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeSaveModal()">Annuler</button>
+                <button class="btn btn-primary" onclick="confirmSaveProject()">
+                    Sauvegarder le projet
+                </button>
+            </div>
+        </div>
+    </div>
+    <style>
+        /* Styles pour la modal de sauvegarde */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--text);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .close-btn:hover {
+            color: var(--text);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--background);
+            color: var(--text);
+            font-size: 0.875rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        .checkbox-label input {
+            width: auto;
+            margin: 0;
+        }
+
+        .reward-notice {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+    </style>
+
+    <!-- ÉDITEUR PARAMETRE -->
     <div class="top-section">
         <div class="sidebar">
+            <h1>3D Scroll Animator</h1>
             <div class="section">
-                <h1>3D Scroll Animator</h1>
-                <h2 class="section-title">Importation 3D</h2>
-
                 <div class="instructions">
                     <p><strong>Instructions :</strong></p>
                     <p>1. Importez un modèle 3D (GLB/GLTF)</p>
@@ -251,20 +432,20 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                         </p>
                     <?php endif; ?>
                 </div>
-                <br>
-
+            </div>
+            <br>
+            <h2 class="section-title">Importation 3D</h2>
+            <div class="section">
                 <input type="file" id="model-input" accept=".glb,.gltf" style="display: none;">
                 <button class="btn" id="import-btn">Importer un modèle 3D</button>
-                <div class="input-group">
-                    <label for="model-scale">Échelle du modèle</label>
-                    <input type="range" id="model-scale" min="0.1" max="3" step="0.1" value="1">
-                </div>
+
                 <button class="btn btn-secondary" onclick="loadTestModel()">Charger modèle test</button>
 
                 <!-- Bouton Record pour utilisateurs connectés -->
                 <?php if (Auth::isLoggedIn()): ?>
-                    <button class="btn" id="record-btn" onclick="saveProject()" style="margin-top: 10px;">
+                    <button class="btn" id="record-btn" onclick="openSaveModal()" style="margin-top: 10px;">
                         <i class="fa-solid fa-floppy-disk"></i> Save Project
+                        <span> +10 💎</span>
                     </button>
 
                     <div class="toggle-container" style="margin-top: 10px; margin-left: 0px;">
@@ -286,11 +467,9 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
             </div>
 
             <div class="section">
-                <h2 class="section-title">Animation par Scroll</h2>
-                <div class="tab-container">
-                    <div class="tab active" data-tab="position">Position</div>
-                    <div class="tab" data-tab="rotation">Rotation</div>
-                    <div class="tab" data-tab="scale">Échelle</div>
+                <div class="input-group">
+                    <label for="model-scale">Échelle du modèle</label>
+                    <input type="range" id="model-scale" min="0.1" max="3" step="0.1" value="1">
                 </div>
 
                 <div class="input-group">
@@ -298,6 +477,20 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                     <input type="range" id="keyframe-percentage" min="0" max="100" value="0">
                     <div style="text-align: center; margin-top: 5px;" id="percentage-value">0%</div>
                 </div>
+
+            </div>
+
+            <h2 class="section-title">Animation par Scroll</h2>
+
+            <div class="section">
+
+                <div class="tab-container">
+                    <div class="tab active" data-tab="position">Position</div>
+                    <div class="tab" data-tab="rotation">Rotation</div>
+                    <div class="tab" data-tab="scale">Échelle</div>
+                </div>
+
+
 
                 <div id="position-controls" class="tab-content">
                     <div class="input-group">
@@ -406,7 +599,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
 
         <!-- État connecté (gratuit) -->
         <div id="code-free-user" class="code-editors"
-            style="<?= (Auth::isLoggedIn() && $_SESSION['subscription'] === 'free') ? 'display:flex;' : 'display:none;' ?>">
+            style="<?= (Auth::isLoggedIn() && $_SESSION['subscription'] === 'pro') ? 'display:flex;' : 'display:none;' ?>">
             <div class="code-box">
                 <div class="code-box-title">HTML</div>
                 <div class="copy-icon" onclick="copyCode('full-html-code')" title="Copier le HTML">
@@ -433,6 +626,8 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
 
             <button class="btn" id="open-codepen">
                 <i class="fa-brands fa-codepen" style="margin-right:6px;"></i>Ouvrir dans CodePen
+                
+                <span>  -50 💎</span>
             </button>
 
             <!-- Call to Action Upgrade 
@@ -454,7 +649,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
 
             <!-- État connecté (Pro) -->
             <div id="code-pro-user" class="code-pro-features"
-                style="<?= (Auth::isLoggedIn() && $_SESSION['subscription'] === 'pro') ? 'display:block;' : 'display:none;' ?>">
+                style="<?= (Auth::isLoggedIn() && $_SESSION['subscription'] === 'free') ? 'display:block;' : 'display:none;' ?>">
                 <div class="code-editors">
                     <div class="code-box">
                         <div class="code-box-title">HTML</div>
@@ -499,51 +694,52 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
 
 
 
-
         <!-- Achat de points à config avec stripe ou lemonsqueezie -->
         <div class="points-shop">
-            <h3>🪙 Acheter des Points</h3>
+            <h3>💎 Gagnez du temps avec les Packs ! Bientôt disponible</h3>
             <?php if (Auth::isLoggedIn()): ?>
                 <div id="user-menu" class="user-menu">
 
                     <span class="user-name" id="user-name">
                         <?= htmlspecialchars($_SESSION['user_name']) ?>
                         <span class="user-points" id="user-points">
-                            🪙 <?= $_SESSION['user_points'] ?? 200 ?>
+                            💎 <?= $_SESSION['user_points'] ?? 200 ?>
                         </span>
                     </span>
                 </div>
             <?php endif; ?>
             </p>
 
+
             <div class="point-packs">
+
                 <div class="point-pack" data-pack-id="1">
                     <h4>Pack Starter</h4>
-                    <div class="points-amount">100 🪙</div>
+                    <div class="points-amount">100 💎</div>
                     <div class="price">4,90 €</div>
-                    <button class="btn btn-primary buy-points">Acheter</button>
+                    <button class="btn btn-primary buy-points">Obtenir</button>
                 </div>
 
                 <div class="point-pack popular" data-pack-id="2">
                     <div class="badge">Populaire</div>
                     <h4>Pack Pro</h4>
-                    <div class="points-amount">500 🪙</div>
+                    <div class="points-amount">500 💎</div>
                     <div class="price">19,90 €</div>
-                    <button class="btn btn-primary buy-points">Acheter</button>
+                    <button class="btn btn-primary buy-points">Obtenir</button>
                 </div>
 
                 <div class="point-pack" data-pack-id="3">
                     <h4>Pack Expert</h4>
-                    <div class="points-amount">1500 🪙</div>
+                    <div class="points-amount">1500 💎</div>
                     <div class="price">49,90 €</div>
-                    <button class="btn btn-primary buy-points">Acheter</button>
+                    <button class="btn btn-primary buy-points">Obtenir</button>
                 </div>
             </div>
         </div>
 
         <br>
-        <p style="text-align: center">Dev by <a href="https://gael-berru.com"
-                style="color: white; text-decoration: none;">berru-g</a></p>
+        <?php require_once 'footer.php'; ?>
+
 
         <script>
             function copyCode(id) {
@@ -558,7 +754,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
             }
         </script>
 
-        <script>
+        <!--<script>
             // Export dans codepen
             document.getElementById("open-codepen").addEventListener("click", () => {
                 const html = document.getElementById("full-html-code").value;
@@ -588,7 +784,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                 form.submit();
                 document.body.removeChild(form);
             });
-        </script>
+        </script>-->
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
@@ -616,7 +812,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                 const points = await response1.json();
                 console.log('1. Points actuels:', points);
 
-                // Test 2: Déduction
+                /* Test 2: Déduction
                 const response2 = await fetch('api.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -624,7 +820,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                 });
                 const deduct = await response2.json();
                 console.log('2. Déduction:', deduct);
-
+*/
                 // Test 3: Vérifie la session
                 console.log('3. Session PHP:', <?= json_encode($_SESSION ?? []) ?>);
             }

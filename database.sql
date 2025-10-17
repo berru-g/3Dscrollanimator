@@ -89,3 +89,37 @@ INSERT INTO point_packs (name, points_amount, price_eur) VALUES
 ('Pack Starter', 100, 4.90),
 ('Pack Pro', 500, 19.90),
 ('Pack Expert', 1500, 49.90);
+
+-- Ajout de la colonne last_login pour suivre la dernière connexion des utilisateurs
+ALTER TABLE users ADD COLUMN last_login DATE NULL;
+
+-- || BETA TESTERS PACKS CADEAUX ||
+-- || Ajouter des points directement aux utilisateurs beta testers
+-- UPDATE users SET points = 500 WHERE id IN (2, 3, 4, 5);
+-- || Ou pour des valeurs différentes par utilisateur
+-- UPDATE users SET points = 1000 WHERE id = 2;   -- Super beta tester
+-- UPDATE users SET points = 750 WHERE id = 3;    -- Beta tester actif
+-- UPDATE users SET points = 500 WHERE id = 4;    -- Beta tester régulier
+-- UPDATE users SET points = 300 WHERE id = 5;    -- Nouveau beta tester
+
+-- || 1. Ajouter les points à l'utilisateur avec id = 2
+-- UPDATE users SET points = points + 500 WHERE id = 2;
+-- || 2. Enregistrer la transaction
+-- INSERT INTO point_transactions (user_id, points_amount, amount_eur, status, payment_intent_id, created_at) 
+-- VALUES (2, 500, 19.90, 'completed', 'pi_test_beta_tester_1', NOW() - INTERVAL 7 DAY);
+
+-- FIN - BETA TESTERS PACKS CADEAUX
+
+-- FORMULAIRE DE CONTACT
+CREATE TABLE IF NOT EXISTS feedback (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NULL,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    type ENUM('bug', 'feature', 'improvement', 'uiux', 'other') NOT NULL,
+    message TEXT NOT NULL,
+    status ENUM('new', 'reviewed', 'in_progress', 'completed') DEFAULT 'new',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
