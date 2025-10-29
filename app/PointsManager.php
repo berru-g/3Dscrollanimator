@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once './includes/config.php';
 
 class PointsManager {
     public static function deductPoints($userId, $points = 50) {//deduit des point lors de la naviguation...bug a trouvé icic 

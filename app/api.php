@@ -1,7 +1,7 @@
 <?php
 // api.php - VERSION CORRIGÉE
 require_once 'auth.php';
-require_once 'projects.php';
+require_once './gallery/projects.php';
 require_once 'PointsManager.php';
 require_once 'RewardSystem.php';
 

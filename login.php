@@ -1,9 +1,9 @@
 <?php
 // login.php
-require_once 'auth.php';
+require_once './app/auth.php';
 
 if (Auth::isLoggedIn()) {
-    header('Location: index.php');
+    header('Location: ./editor/index.php');
     exit;
 }
 
@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     
     if (Auth::login($email, $password)) {
-        header('Location: index.php');
+        header('Location: ./editor/index.php');
         exit;
     } else {
         $error = 'Email ou mot de passe incorrect';
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion - 3D Scroll Animator</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./asset/style.css">
 </head>
 <body>
     <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dark);">

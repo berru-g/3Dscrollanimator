@@ -1,11 +1,11 @@
 <?php
 // export_transactions.php
-require_once 'config.php';
-require_once 'auth.php';
+require_once './includes/config.php';
+require_once './app/auth.php';
 
 // Vérifier admin
 if (!Auth::isLoggedIn() || $_SESSION['user_id'] != 1) {
-    header('Location: index.php');
+    header('Location: ./editor/index.php');
     exit;
 }
 

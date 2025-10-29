@@ -1,8 +1,8 @@
 <?php
 // index.php
-require_once 'config.php';
-require_once 'auth.php';
-require_once 'PointsManager.php';
+require_once './includes/config.php';
+require_once './app/auth.php';
+require_once './app/PointsManager.php';
 
 // Vérifier si un projet doit être chargé
 $loadProjectId = $_GET['load_project'] ?? null;
@@ -35,7 +35,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
     <link rel="canonical" href="https://gael-berru.com" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./asset/style.css">
 
     <script type="application/ld+json">
 {
@@ -133,7 +133,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
     <!-- Notifications Toast -->
     <div id="notification-container" class="notification-container"></div>
 
-    <?php require_once 'header.php'; ?>
+    <?php require_once './asset/header.php'; ?>
 
     <!-- INITIALISATION DES VARIABLES AUTH POUR JAVASCRIPT -->
     <script>
@@ -790,7 +790,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.min.js"></script>
-        <script src="scriptV2.js"></script>
+        <script src="./asset/scriptV2.js"></script>
 
         <script>
             // Variable globale pour le chargement de projet

@@ -1,6 +1,6 @@
 <?php
 // footer.php
-require_once 'config.php';
+require_once './includes/config.php';
 
 // Récupérer les stats
 $db = getDB();

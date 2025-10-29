@@ -1,8 +1,8 @@
 <?php
 // header_start.php
-require_once 'config.php';
-require_once 'auth.php';
-require_once 'PointsManager.php';
+require_once './includes/config.php';
+require_once './app/auth.php';
+require_once './app/PointsManager.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -295,12 +295,12 @@ require_once 'PointsManager.php';
 
             <div class="nav-icons">
                 <a href="index.php"
-                    class="nav-icon <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>">
+                    class="nav-icon <?= basename($_SERVER['PHP_SELF']) == './editor/index.php' ? 'active' : '' ?>">
                     <i class="fas fa-pen"></i>
                     <span>Edit</span>
                 </a>
                 <a href="gallery.php"
-                    class="nav-icon <?= basename($_SERVER['PHP_SELF']) == 'gallery.php' ? 'active' : '' ?>">
+                    class="nav-icon <?= basename($_SERVER['PHP_SELF']) == './gallery/index.php' ? 'active' : '' ?>">
                     <i class="fa-solid fa-folder"></i>
                     <span>Explore</span>
                 </a>

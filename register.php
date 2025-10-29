@@ -1,9 +1,9 @@
 <?php
 // register.php
-require_once 'auth.php';
+require_once './app/auth.php';
 
 if (Auth::isLoggedIn()) {
-    header('Location: index.php');
+    header('Location: ./editor/index.php');
     exit;
 }
 
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Le mot de passe doit faire au moins 6 caractères';
     } else {
         if (Auth::register($username, $email, $password)) {
-            header('Location: index.php');
+            header('Location: ./editor/index.php');
             exit;
         } else {
             $error = 'Cet email ou nom d\'utilisateur est déjà utilisé';
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - 3D Scroll Animator</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./asset/style.css">
 </head>
 <body>
     <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dark);">

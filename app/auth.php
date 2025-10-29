@@ -1,6 +1,6 @@
 <?php
 // auth.php - VERSION CORRIGÉE
-require_once 'config.php';
+require_once './includes/config.php';
 require_once 'RewardSystem.php';
 
 // DÉMARRER LA SESSION TOUJOURS EN PREMIER
@@ -105,7 +105,7 @@ class Auth {
 // Gestion de la déconnexion
 if (isset($_GET['logout'])) {
     Auth::logout();
-    header('Location: index.php');
+    header('Location: index.html');
     exit;
 }
 ?>
