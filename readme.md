@@ -1,6 +1,10 @@
-## Proto 3
+## MVP 3dscrollanimator.com
 
-### Générateur d’effet 3D au scroll de ton site
+
+Créez des animations 3D fluides synchronisées au scroll — no code tool.
+Importez votre modèle, définissez vos animations liés au pourcentage de scroll,
+exportez un package HTML/CSS/JS prêt à l'emploi ou ouvrez-le directement dans CodePen.
+
 
 #### Steps :
 

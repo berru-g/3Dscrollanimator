@@ -34,8 +34,8 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
         content="Créez des animations 3D sans une ligne de code. Importez vos modèles 3D, définissez des keyframes et générez du code prêt à l'emploi pour vos projets web.">
     <meta property="og:image"
         content="https://raw.githubusercontent.com/berru-g/berru-g/refs/heads/main/img/3dscrollanimator_preview.png">
-    <meta property="og:url" content="https://gael-berru.com">
-    <link rel="canonical" href="https://gael-berru.com" />
+    <meta property="og:url" content="https://3dscrollanimator.com">
+    <link rel="canonical" href="https://3dscrollanimator.com" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -57,7 +57,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
   "author": {
     "@type": "Organization",
     "name": "Berru-G",
-    "url": "https://gael-berru.com"
+    "url": "https://3dscrollanimator.com"
   },
   "aggregateRating": {
     "@type": "AggregateRating",
@@ -76,18 +76,18 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
     {
       "@type": "ImageObject",
       "caption": "Interface de l'éditeur 3D no-code",
-      "url": "https://gael-berru.com/img/3Dscrollanimator.png"
+      "url": "https://3dscrollanimator.com/img/3Dscrollanimator.png"
     },
     {
       "@type": "ImageObject", 
       "caption": "Galerie des créations utilisateurs",
-      "url": "https://gael-berru.com/img/3Dscrollanimator.png"
+      "url": "https://3dscrollanimator.com/img/3Dscrollanimator.png"
     }
   ],
   "softwareVersion": "1.0",
   "releaseNotes": "Version initiale avec éditeur 3D, système de keyframes et export de code",
-  "downloadUrl": "https://gael-berru.com/3Dscrollanimator/",
-  "url": "https://gael-berru.com/3Dscrollanimator/",
+  "downloadUrl": "https://3dscrollanimator.com/3Dscrollanimator/",
+  "url": "https://3dscrollanimator.com/3Dscrollanimator/",
   "keywords": "animation 3D, scroll, no-code, three.js, web design, creative coding",
   "memoryRequirements": "2GB RAM",
   "processorRequirements": "Processeur moderne avec WebGL",
@@ -100,8 +100,8 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
   "@context": "https://schema.org",
   "@type": "Organization", 
   "name": "3D Scroll Animator",
-  "url": "https://gael-berru.com/3Dscrollanimator/",
-  "logo": "https://gael-berru.com/img/drone-logo.png",
+  "url": "https://3dscrollanimator.com/3Dscrollanimator/",
+  "logo": "https://3dscrollanimator.com/img/drone-logo.png",
   "description": "Plateforme no-code de création d'animations 3D interactives pour le web",
   "address": {
     "@type": "PostalAddress",
@@ -120,7 +120,17 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
 }
 </script>
 
+
     <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1JTTQTPF3Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-1JTTQTPF3Q');
+    </script>
+
 
 
 </head>
@@ -173,7 +183,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                     <li>✅ Voir le code complet de votre animation</li>
                     <li>✅ Exporter vers CodePen en 1 clic</li>
                     <li>✅ Sauvegarder vos projets</li>
-                    <li><strong>Offert</strong>  200 💎 Crédits </li>
+                    <li><strong>Offert</strong> 200 💎 Crédits </li>
                 </ul>
             </div>
         </div>
@@ -243,8 +253,8 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                     <p>5. Copiez le code généré pour l'utiliser sur votre site</p>
                     <?php if (!Auth::isLoggedIn()): ?>
                         <p style="color: var(--primary); margin-top: 10px;">
-                            <strong>100 💎 offert :</strong> <a href="register.php"
-                                style="color: var(--primary);">Essayer gratuitement</a>
+                            <strong>100 💎 offert :</strong> <a href="register.php" style="color: var(--primary);">Essayer
+                                gratuitement</a>
                         </p>
                     <?php endif; ?>
                 </div>
@@ -398,159 +408,159 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
 
     <!-- Éditeur de code complet -->
     <!-- Éditeur de code complet REVU -->
-<div class="code-exporter">
-    <h2 class="section-title">Export de Code</h2>
+    <div class="code-exporter">
+        <h2 class="section-title">Export de Code</h2>
 
-    <!-- État non connecté -->
-    <?php if (!Auth::isLoggedIn()): ?>
-    <div class="guest-message">
-        <div class="guest-icon"><img src="../img/mascotte-code.png"></div>
-        <h3>Connectez-vous pour exporter votre code</h3>
-        <p>Accédez au code complet et à l'export CodePen en vous connectant gratuitement</p>
-        <a href="login.php" class="btn btn-primary">
-            <i class="fas fa-sign-in-alt"></i> Se connecter
-        </a>
+        <!-- État non connecté -->
+        <?php if (!Auth::isLoggedIn()): ?>
+            <div class="guest-message">
+                <div class="guest-icon"><img src="../img/mascotte-code.png"></div>
+                <h3>Connectez-vous pour exporter votre code</h3>
+                <p>Accédez au code complet et à l'export CodePen en vous connectant gratuitement</p>
+                <a href="login.php" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </a>
+            </div>
+
+            <!-- État connecté -->
+        <?php else: ?>
+            <div class="code-actions">
+                <!-- Bouton pour débloquer le code -->
+                <div class="unlock-code-section">
+                    <button class="btn-cta" id="unlock-code-btn" onclick="unlockCodePreview()">
+                        <i class="fas fa-code"></i> Voir le code complet
+                        <span> -50 💎</span>
+                    </button>
+                    <p class="cost-info">Débloquez une fois, accès illimité à ce projet</p>
+                </div>
+
+                <!-- Section code (cachée par défaut) -->
+                <div id="code-editors-section" class="code-editors" style="display: none;">
+                    <div class="code-box">
+                        <div class="code-box-title">HTML</div>
+                        <div class="copy-icon" onclick="copyCode('full-html-code')" title="Copier le HTML">
+                            <i class="fa-regular fa-copy"></i>
+                        </div>
+                        <textarea id="full-html-code" readonly></textarea>
+                    </div>
+
+                    <div class="code-box">
+                        <div class="code-box-title">CSS</div>
+                        <div class="copy-icon" onclick="copyCode('full-css-code')" title="Copier le CSS">
+                            <i class="fa-regular fa-copy"></i>
+                        </div>
+                        <textarea id="full-css-code" readonly></textarea>
+                    </div>
+
+                    <div class="code-box">
+                        <div class="code-box-title">JavaScript</div>
+                        <div class="copy-icon" onclick="copyCode('full-js-code')" title="Copier le JS">
+                            <i class="fa-regular fa-copy"></i>
+                        </div>
+                        <textarea id="full-js-code" readonly></textarea>
+                    </div>
+
+                    <button class="btn-cta" id="open-codepen">
+                        <i class="fa-brands fa-codepen"></i> Ouvrir dans CodePen
+                        <span>-50 💎</span>
+                    </button>
+                </div>
+            </div>
+        <?php endif; ?>
     </div>
 
-    <!-- État connecté -->
-    <?php else: ?>
-    <div class="code-actions">
-        <!-- Bouton pour débloquer le code -->
-        <div class="unlock-code-section">
-            <button class="btn-cta" id="unlock-code-btn" onclick="unlockCodePreview()">
-                <i class="fas fa-code"></i> Voir le code complet
-                <span> -50 💎</span>
-            </button>
-            <p class="cost-info">Débloquez une fois, accès illimité à ce projet</p>
-        </div>
-
-        <!-- Section code (cachée par défaut) -->
-        <div id="code-editors-section" class="code-editors" style="display: none;">
-            <div class="code-box">
-                <div class="code-box-title">HTML</div>
-                <div class="copy-icon" onclick="copyCode('full-html-code')" title="Copier le HTML">
-                    <i class="fa-regular fa-copy"></i>
-                </div>
-                <textarea id="full-html-code" readonly></textarea>
-            </div>
-
-            <div class="code-box">
-                <div class="code-box-title">CSS</div>
-                <div class="copy-icon" onclick="copyCode('full-css-code')" title="Copier le CSS">
-                    <i class="fa-regular fa-copy"></i>
-                </div>
-                <textarea id="full-css-code" readonly></textarea>
-            </div>
-
-            <div class="code-box">
-                <div class="code-box-title">JavaScript</div>
-                <div class="copy-icon" onclick="copyCode('full-js-code')" title="Copier le JS">
-                    <i class="fa-regular fa-copy"></i>
-                </div>
-                <textarea id="full-js-code" readonly></textarea>
-            </div>
-
-            <button class="btn-cta" id="open-codepen">
-                <i class="fa-brands fa-codepen"></i> Ouvrir dans CodePen
-                <span>-50 💎</span>
-            </button>
-        </div>
-    </div>
-    <?php endif; ?>
-</div>
 
 
+    <!-- Achat de points à config avec stripe ou lemonsqueezie -->
+    <div class="points-shop">
+        <h3>💎 Gagnez du temps avec les Packs ! Bientôt disponible</h3>
+        <?php if (Auth::isLoggedIn()): ?>
+            <div id="user-menu" class="user-menu">
 
-        <!-- Achat de points à config avec stripe ou lemonsqueezie -->
-        <div class="points-shop">
-            <h3>💎 Gagnez du temps avec les Packs ! Bientôt disponible</h3>
-            <?php if (Auth::isLoggedIn()): ?>
-                <div id="user-menu" class="user-menu">
-
-                    <span class="user-name" id="user-name">
-                        <?= htmlspecialchars($_SESSION['user_name']) ?>
-                        <span class="user-points" id="user-points">
-                            💎 <?= $_SESSION['user_points'] ?? 200 ?>
-                        </span>
+                <span class="user-name" id="user-name">
+                    <?= htmlspecialchars($_SESSION['user_name']) ?>
+                    <span class="user-points" id="user-points">
+                        💎 <?= $_SESSION['user_points'] ?? 200 ?>
                     </span>
-                </div>
-            <?php endif; ?>
-            </p>
+                </span>
+            </div>
+        <?php endif; ?>
+        </p>
 
 
-            <div class="point-packs">
+        <div class="point-packs">
 
-                <div class="point-pack" data-pack-id="1">
-                    <h4>Pack Starter</h4>
-                    <div class="points-amount">100 💎</div>
-                    <div class="price">4,90 €</div>
-                    <button class="btn btn-primary buy-points">Obtenir</button>
-                </div>
+            <div class="point-pack" data-pack-id="1">
+                <h4>Pack Starter</h4>
+                <div class="points-amount">100 💎</div>
+                <div class="price">4,90 €</div>
+                <button class="btn btn-primary buy-points">Obtenir</button>
+            </div>
 
-                <div class="point-pack popular" data-pack-id="2">
-                    <div class="badge">Populaire</div>
-                    <h4>Pack Pro</h4>
-                    <div class="points-amount">500 💎</div>
-                    <div class="price">19,90 €</div>
-                    <button class="btn btn-primary buy-points">Obtenir</button>
-                </div>
+            <div class="point-pack popular" data-pack-id="2">
+                <div class="badge">Populaire</div>
+                <h4>Pack Pro</h4>
+                <div class="points-amount">500 💎</div>
+                <div class="price">19,90 €</div>
+                <button class="btn btn-primary buy-points">Obtenir</button>
+            </div>
 
-                <div class="point-pack" data-pack-id="3">
-                    <h4>Pack Expert</h4>
-                    <div class="points-amount">1500 💎</div>
-                    <div class="price">49,90 €</div>
-                    <button class="btn btn-primary buy-points">Obtenir</button>
-                </div>
+            <div class="point-pack" data-pack-id="3">
+                <h4>Pack Expert</h4>
+                <div class="points-amount">1500 💎</div>
+                <div class="price">49,90 €</div>
+                <button class="btn btn-primary buy-points">Obtenir</button>
             </div>
         </div>
+    </div>
 
-        <br>
-        <?php require_once 'footer.php'; ?>
+    <br>
+    <?php require_once 'footer.php'; ?>
 
 
-        <script>
-            function copyCode(id) {
-                const textarea = document.getElementById(id);
-                textarea.select();
-                document.execCommand("copy");
+    <script>
+        function copyCode(id) {
+            const textarea = document.getElementById(id);
+            textarea.select();
+            document.execCommand("copy");
 
-                const icon = event.currentTarget;
-                const old = icon.textContent;
-                icon.textContent = "✅";
-                setTimeout(() => (icon.textContent = old), 1000);
+            const icon = event.currentTarget;
+            const old = icon.textContent;
+            icon.textContent = "✅";
+            setTimeout(() => (icon.textContent = old), 1000);
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.min.js"></script>
+    <script src="scriptV2.js"></script>
+
+    <script>
+        // Variable globale pour le chargement de projet
+        const loadProjectId = <?= $loadProjectId ? $loadProjectId : 'null' ?>;
+
+        // Après l'initialisation de l'application
+        setTimeout(() => {
+            if (loadProjectId) {
+                loadProject(loadProjectId);
             }
-        </script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.min.js"></script>
-        <script src="scriptV2.js"></script>
-
-        <script>
-            // Variable globale pour le chargement de projet
-            const loadProjectId = <?= $loadProjectId ? $loadProjectId : 'null' ?>;
-
-            // Après l'initialisation de l'application
-            setTimeout(() => {
-                if (loadProjectId) {
-                    loadProject(loadProjectId);
-                }
-            }, 1000);
+        }, 1000);
 
 
-            // DEBUG
-            async function debugAll() {
-                console.log('=== DEBUG COMPLET ===');
+        // DEBUG
+        async function debugAll() {
+            console.log('=== DEBUG COMPLET ===');
 
-                // Test 1: Points actuels
-                const response1 = await fetch('api.php?action=get_user_points');
-                const points = await response1.json();
-                console.log('1. Points actuels:', points);
-                // Test 3: Vérifie la session
-                console.log('3. Session PHP:', <?= json_encode($_SESSION ?? []) ?>);
-            }
-            debugAll();
-        </script>
+            // Test 1: Points actuels
+            const response1 = await fetch('api.php?action=get_user_points');
+            const points = await response1.json();
+            console.log('1. Points actuels:', points);
+            // Test 3: Vérifie la session
+            console.log('3. Session PHP:', <?= json_encode($_SESSION ?? []) ?>);
+        }
+        debugAll();
+    </script>
 </body>
 
 </html>

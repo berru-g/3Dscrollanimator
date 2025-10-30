@@ -1,6 +1,6 @@
 -- database.sql
-CREATE DATABASE IF NOT EXISTS scroll3d_edit;
-USE scroll3d_edit;
+CREATE DATABASE IF NOT EXISTS u667977963_3Dscrollsaas;
+USE u667977963_3Dscrollsaas;
 
 -- Table des utilisateurs
 CREATE TABLE users (

@@ -1642,3 +1642,57 @@ select {
     border-radius: 12px;
     border: 1px solid var(--border);
 }
+.crypto-payment-modal {
+    background: var(--grey-light);
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 400px;
+    margin: 2rem auto;
+}
+
+.amount-section {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.crypto-amount {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.fiat-equivalent {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-top: 0.5rem;
+}
+
+.rate-info {
+    text-align: center;
+    margin: 1rem 0;
+    padding: 0.5rem;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+}
+
+.pack-info {
+    text-align: center;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: var(--grey);
+    border-radius: 8px;
+}
+
+.points-amount {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.wallet-info {
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background: rgba(0,0,0,0.1);
+    border-radius: 6px;
+    font-family: 'Fira Code', monospace;
+}
