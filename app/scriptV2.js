@@ -1747,43 +1747,9 @@ function updateUI() {
     }
 }
 
-/* Gestion de l'achat de points
-document.querySelectorAll('.buy-points').forEach(button => {
-    button.addEventListener('click', async function () {
-        const packElement = this.closest('.point-pack');
-        const packId = packElement.getAttribute('data-pack-id');
 
-        try {
-            const response = await fetch('api.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `action=create_checkout_session&pack_id=${packId}`
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                // Rediriger vers Stripe Checkout
-                const stripe = Stripe('pk_test_ta_cle_publique');
-                const { error } = await stripe.redirectToCheckout({
-                    sessionId: result.sessionId
-                });
-
-                if (error) {
-                    notify.error('Erreur de redirection', error.message);
-                }
-            } else {
-                notify.error('Erreur', result.message);
-            }
-        } catch (error) {
-            console.error('Erreur achat:', error);
-            notify.error('Erreur réseau', 'Impossible de procéder au paiement');
-        }
-    });
-}); */
 // Nouvelle fonction pour l'achat via Lemon Squeezie
+/*
 document.querySelectorAll('.buy-points').forEach(button => {
     button.addEventListener('click', async function () {
         const packElement = this.closest('.point-pack');
@@ -1812,6 +1778,637 @@ document.querySelectorAll('.buy-points').forEach(button => {
         }
     });
 });
+*/
+
+
+// ======================================
+// SYSTÈME DE PAIEMENT UNIFIÉ (Lemon + Solana) //'D6khWoqvc2zX46HVtSZcNrPumnPLPM72SnSuDhBrZeTC'
+// ======================================
+//import { Connection, PublicKey, Transaction, SystemProgram } from 'https://cdn.jsdelivr.net/npm/@solana/web3.js@1.87.6/+esm';
+// car 
+// npm install @solana/web3.js @solana/wallet-adapter-wallets @solana/wallet-adapter-base
+// dependance trop lourde
+class UnifiedPaymentSystem {
+    constructor() {
+        this.merchantAddress = 'D6khWoqvc2zX46HVtSZcNrPumnPLPM72SnSuDhBrZeTC';
+        this.packConfig = {
+            1: { points: 100, eur: 4.90, name: 'Starter' },
+            2: { points: 500, eur: 19.90, name: 'Pro' },
+            3: { points: 1500, eur: 49.90, name: 'Expert' }
+        };
+        this.solPrice = 150;
+        this.loadSolPrice();
+        this.injectCSS();
+    }
+
+    injectCSS() {
+        const css = `
+            .payment-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    z-index: 10000;
+    backdrop-filter: blur(5px);
+    padding: 20px 0; 
+    overflow-y: auto; 
+}
+
+.payment-modal {
+    background: var(--grey-light);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    border: 1px solid var(--grey);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    color: var(--text);
+    margin: auto; 
+    max-height: 90vh; 
+    overflow-y: auto; 
+}
+
+
+.solana-instructions {
+    max-width: 600px;
+    max-height: 85vh; 
+}
+
+.modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    bottom: 0;
+    background: var(--grey-light);
+    padding-top: 1rem;
+    margin-top: auto; 
+}
+
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1.5rem;
+            }
+
+            .modal-header h3 {
+                margin: 0;
+                color: var(--text);
+                font-size: 1.5rem;
+            }
+
+            .modal-close {
+                background: none;
+                border: none;
+                font-size: 2rem;
+                cursor: pointer;
+                color: var(--text-light);
+                padding: 0;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .pack-info {
+                text-align: center;
+                margin-bottom: 2rem;
+                padding: 1rem;
+                background: var(--grey);
+                border-radius: 12px;
+            }
+
+            .pack-name {
+                font-size: 1.3rem;
+                font-weight: bold;
+                color: var(--text);
+            }
+
+            .pack-points {
+                font-size: 1.1rem;
+                color: var(--accent);
+                margin-top: 0.5rem;
+            }
+
+            .payment-options {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .payment-option {
+                display: flex;
+                align-items: center;
+                padding: 1.5rem;
+                background: var(--grey);
+                border-radius: 12px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border: 2px solid transparent;
+            }
+
+            .payment-option:hover {
+                border-color: var(--primary);
+                transform: translateY(-2px);
+                background: var(--grey-light);
+            }
+
+            .option-icon {
+                font-size: 2rem;
+                margin-right: 1rem;
+            }
+
+            .option-content {
+                flex: 1;
+            }
+
+            .option-title {
+                font-weight: bold;
+                color: var(--text);
+                margin-bottom: 0.25rem;
+            }
+
+            .option-subtitle {
+                color: var(--text-light);
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .option-amount {
+                font-weight: bold;
+                color: var(--primary);
+                font-size: 1.1rem;
+            }
+
+            .option-arrow {
+                font-size: 1.5rem;
+                color: var(--text-light);
+            }
+
+            .security-badge {
+                text-align: center;
+                color: var(--text-light);
+                font-size: 0.9rem;
+                padding-top: 1rem;
+                border-top: 1px solid var(--grey);
+            }
+
+            .solana-instructions {
+                max-width: 600px;
+            }
+
+            .success-badge {
+                background: var(--success);
+                color: white;
+                padding: 1rem;
+                border-radius: 8px;
+                text-align: center;
+                margin-bottom: 1rem;
+                font-weight: bold;
+            }
+
+            .amount-card {
+                text-align: center;
+                background: linear-gradient(135deg, #9945FF, #14F195);
+                color: white;
+                padding: 2rem;
+                border-radius: 12px;
+                margin-bottom: 2rem;
+            }
+
+            .crypto-amount {
+                font-size: 2.5rem;
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+            }
+
+            .fiat-equivalent {
+                font-size: 1.2rem;
+                opacity: 0.9;
+            }
+
+            .wallet-address {
+                margin-bottom: 2rem;
+            }
+
+            .wallet-address label {
+                display: block;
+                margin-bottom: 0.5rem;
+                color: var(--text-light);
+                font-weight: bold;
+            }
+
+            .address-box {
+                display: flex;
+                align-items: center;
+                background: var(--grey);
+                padding: 1rem;
+                border-radius: 8px;
+                border: 1px solid var(--grey);
+                font-family: 'Fira Code', monospace;
+            }
+
+            .address-box code {
+                flex: 1;
+                font-size: 0.9rem;
+                word-break: break-all;
+                color: var(--text);
+            }
+
+            .copy-btn {
+                background: var(--primary);
+                border: none;
+                padding: 0.5rem;
+                border-radius: 6px;
+                cursor: pointer;
+                margin-left: 1rem;
+                color: white;
+            }
+
+            .trust-message {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                background: var(--grey);
+                padding: 1rem;
+                border-radius: 8px;
+                margin: 1rem 0;
+            }
+
+            .trust-icon {
+                font-size: 2rem;
+            }
+
+            .trust-text {
+                flex: 1;
+                font-size: 0.9rem;
+            }
+
+            .steps {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .step {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .step-number {
+                background: var(--primary);
+                color: white;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                font-size: 0.9rem;
+            }
+
+            .step-text {
+                color: var(--text);
+            }
+
+            .modal-actions {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .modal-btn {
+                padding: 1rem 1.5rem;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 1rem;
+                font-weight: bold;
+                transition: all 0.3s ease;
+            }
+
+            .modal-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+
+            .option-rate {
+                font-size: 0.8rem;
+                color: var(--text-light);
+                margin-top: 0.25rem;
+            }
+        `;
+
+        if (!document.getElementById('payment-system-css')) {
+            const style = document.createElement('style');
+            style.id = 'payment-system-css';
+            style.textContent = css;
+            document.head.appendChild(style);
+        }
+    }
+
+    async loadSolPrice() {
+        try {
+            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=eur');
+            const data = await response.json();
+            this.solPrice = data.solana.eur;
+            console.log('Prix SOL mis à jour:', this.solPrice + '€');
+        } catch (error) {
+            console.error('Erreur API CoinGecko, utilisation fallback:', error);
+        }
+    }
+
+    eurToSol(eurAmount) {
+        const sol = eurAmount / this.solPrice;
+        return Math.round(sol * 10000) / 10000;
+    }
+
+    // FONCTION PRINCIPALE
+    setupPaymentButtons() {
+        document.querySelectorAll('.buy-points').forEach(button => {
+            button.addEventListener('click', async (event) => {
+                event.preventDefault();
+                const packElement = button.closest('.point-pack');
+                const packId = packElement.getAttribute('data-pack-id');
+
+                this.showPaymentModal(packId);
+            });
+        });
+    }
+
+    showPaymentModal(packId) {
+        const pack = this.packConfig[packId];
+        if (!pack) return;
+
+        const solAmount = this.eurToSol(pack.eur);
+
+        const modalHTML = `
+            <div class="payment-modal-overlay">
+                <div class="payment-modal">
+                    <div class="modal-header">
+                        <h3>Choisir le paiement</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    
+                    <div class="pack-info">
+                        <div class="pack-name">Pack ${pack.name}</div>
+                        <div class="pack-points">+${pack.points} 💎</div>
+                    </div>
+
+                    <div class="payment-options">
+                        <div class="payment-option crypto-option">
+                            <div class="option-icon"><i class="fa-solid fa-wallet"></i></div>
+                            <div class="option-content">
+                                <div class="option-title">Paiement Crypto</div>
+                                <div class="option-subtitle">Solana - Instantané</div>
+                                <div class="option-amount">${solAmount} SOL</div>
+                                <div class="option-rate">≈ ${pack.eur} €</div>
+                            </div>
+                            <div class="option-arrow">→</div>
+                        </div>
+
+                        <div class="payment-option card-option">
+                            <div class="option-icon"><i class="fa-solid fa-credit-card"></i></div>
+                            <div class="option-content">
+                                <div class="option-title">Carte Bancaire</div>
+                                <div class="option-subtitle">Visa, Mastercard</div>
+                                <div class="option-amount">${pack.eur} €</div>
+                            </div>
+                            <div class="option-arrow">→</div>
+                        </div>
+                    </div>
+
+                    <div class="security-badge">
+                        🔒 Paiements 100% sécurisés
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+        // Events pour les options
+        document.querySelector('.crypto-option').onclick = () => {
+            this.closeModal();
+            this.processSolanaPayment(packId);
+        };
+
+        document.querySelector('.card-option').onclick = () => {
+            this.closeModal();
+            this.processLemonPayment(packId);
+        };
+
+        document.querySelector('.modal-close').onclick = () => this.closeModal();
+        document.querySelector('.payment-modal-overlay').onclick = (e) => {
+            if (e.target === e.currentTarget) this.closeModal();
+        };
+    }
+
+    closeModal() {
+        const modal = document.querySelector('.payment-modal-overlay');
+        if (modal) modal.remove();
+        showPointsAnimation('thanks');
+    }
+
+    async processSolanaPayment(packId) {
+        const pack = this.packConfig[packId];
+        const solAmount = this.eurToSol(pack.eur);
+
+        try {
+            // 1. Vérifier si Phantom est installé
+            if (!window.solana || !window.solana.isPhantom) {
+                notify.error('Installe Phantom Wallet!', 'Solana');
+                window.open('https://phantom.app/', '_blank');
+                return;
+            }
+
+            // 2. Connecter le wallet
+            notify.info('Connexion à Phantom...', 'Solana');
+            await window.solana.connect();
+
+            // 3. Créditer les points
+            await this.creditPointsImmediately(packId);
+
+            // 4. Préparer la transaction
+            const connection = new Connection('https://api.mainnet-beta.solana.com');
+            const transaction = new Transaction().add(
+                SystemProgram.transfer({
+                    fromPubkey: window.solana.publicKey,
+                    toPubkey: new PublicKey(this.merchantAddress),
+                    lamports: solAmount * 1000000000 // SOL → lamports
+                })
+            );
+
+            // 5. Envoyer la transaction
+            const { signature } = await window.solana.signAndSendTransaction(transaction);
+
+            notify.success('Transaction envoyée!', 'Solana');
+            console.log('Transaction hash:', signature);
+
+        } catch (error) {
+            console.error('Erreur Phantom:', error);
+
+            // Fallback vers instructions manuelles
+            if (error.message.includes('User rejected')) {
+                notify.info('Transaction annulée', 'Solana');
+            } else {
+                notify.error('Erreur wallet', 'Utilisation manuelle recommandée');
+                this.showSolanaInstructions(packId, solAmount);
+            }
+        }
+    }
+
+    async processLemonPayment(packId) {
+        try {
+            const response = await fetch('api.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `action=create_lemon_checkout&pack_id=${packId}`
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                notify.info('Redirection vers le paiement...', 'Carte Bancaire');
+                window.location.href = result.checkout_url;
+            } else {
+                notify.error('Erreur', result.message);
+            }
+        } catch (error) {
+            console.error('Erreur achat:', error);
+            notify.error('Erreur réseau', 'Impossible de procéder au paiement');
+        }
+    }
+
+    async creditPointsImmediately(packId) {
+        const pack = this.packConfig[packId];
+
+        try {
+            const response = await fetch('api.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `action=credit_points_immediate&points=${pack.points}`
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                showPointsAnimation(pack.points, `+${pack.points} 💎 crédités !`);
+                updateUserPointsDisplay(result.new_balance);
+                notify.success(`Pack ${pack.name} acheté !`, 'Succès');
+            }
+        } catch (error) {
+            console.error('Erreur crédit points:', error);
+            // Fallback : au moins on montre l'animation
+            showPointsAnimation(pack.points, `+${pack.points} 💎 (en attente de validation)`);
+        }
+    }
+
+    showSolanaInstructions(packId, solAmount) {
+        const pack = this.packConfig[packId];
+
+        const modalHTML = `
+            <div class="payment-modal-overlay">
+                <div class="payment-modal solana-instructions">
+                    <div class="modal-header">
+                        <h3><i class="fa-solid fa-wallet"></i> Paiement Solana</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    
+                    <div class="instructions-content">
+                        <div class="success-badge">
+                            ✅ Crédités d'avance !
+                        </div>
+
+                        <div class="amount-card">
+                            <div class="crypto-amount">${solAmount} SOL</div>
+                            <div class="fiat-equivalent">≈ ${pack.eur} €</div>
+                        </div>
+
+                        <div class="wallet-address">
+                            <label>Adresse de réception :</label>
+                            <div class="address-box">
+                                <code>${this.merchantAddress}</code>
+                                <button class="copy-btn"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="trust-message">
+                            <div class="trust-icon">🤝</div>
+                            <div class="trust-text">
+                                <strong>Merci de votre confiance !</strong><br>
+                                Les points ont été crédités en avance.
+                            </div>
+                        </div>
+
+                        <div class="steps">
+                            <div class="step">
+                                <span class="step-number">1</span>
+                                <span class="step-text">Copie l'adresse Solana</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">2</span>
+                                <span class="step-text">Envoie <strong>${solAmount} SOL</strong></span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">3</span>
+                                <span class="step-text">C'est tout ! Points déjà reçus </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button class="modal-btn btn-primary">
+                            Compris, merci !
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+        document.querySelector('.copy-btn').onclick = () => {
+            navigator.clipboard.writeText(this.merchantAddress);
+            notify.success('Adresse copiée !', 'Solana');
+        };
+
+        document.querySelector('.btn-primary').onclick = () => this.closeModal();
+        document.querySelector('.modal-close').onclick = () => this.closeModal();
+        document.querySelector('.payment-modal-overlay').onclick = (e) => {
+            if (e.target === e.currentTarget) this.closeModal();
+        };
+    }
+}
+
+// ======================================
+// INITIALISATION
+// ======================================
+
+let paymentSystem;
+
+document.addEventListener('DOMContentLoaded', function () {
+    paymentSystem = new UnifiedPaymentSystem();
+    paymentSystem.setupPaymentButtons();
+    console.log('✅ Système de paiement unifié initialisé');
+});
+
+// FIN DU TEST PAYEMENT VIA WALLET SOLANA
+
+
 
 // BTN Fonction pour débloquer l'accès au code
 async function unlockCodePreview() {
