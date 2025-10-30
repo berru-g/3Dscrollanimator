@@ -10,7 +10,7 @@
     <meta name="description"
         content="Créez des animations 3D sans une ligne de code. Importez vos modèles 3D, définissez des keyframes et générez du code prêt à l'emploi pour vos projets web.">
     <meta name="keywords"
-        content="Créez des animations 3D, 3D scroll animator free tool, Free 3D Animation Software, animation synchronisées au scroll, no code, 3D Animator, Scroll effect, WebGL, Three.js, GLTF, GLB, Keyframes, Code Generator, Web Development, Interactive, Visual Effects">
+        content="Créez des animations 3D, 3D scroll animator free tool, synchronisées au scroll, no code, 3D Animator, Scroll effect, WebGL, Three.js, GLTF, GLB, Keyframes, Code Generator, Web Development, Interactive, Visual Effects">
     <meta name="author" content="berru-g">
     <meta name="robots" content="noai">
     <meta property="og:title" content="Éditeur d'Animation 3D avec Scroll">
@@ -18,7 +18,7 @@
         content="Créez des animations 3D sans une ligne de code. Importez vos modèles 3D, définissez des keyframes et générez du code prêt à l'emploi pour vos projets web.">
     <meta property="og:image"
         content="https://raw.githubusercontent.com/berru-g/berru-g/refs/heads/main/img/3Dscrollanimator.png">
-    <meta property="og:url" content="/editor/landing.html">
+    <meta property="og:url" content="https://gael-berru.com/3Dscrollanimator/landing.html">
     <link rel="canonical" href="https://gael-berru.com" />
 
 
@@ -68,8 +68,8 @@
   ],
   "softwareVersion": "1.0",
   "releaseNotes": "Version initiale avec éditeur 3D, système de keyframes et export de code",
-  "downloadUrl": "/editor/",
-  "url": "/editor/",
+  "downloadUrl": "https://gael-berru.com/3Dscrollanimator/",
+  "url": "https://gael-berru.com/3Dscrollanimator/",
   "keywords": "animation 3D, scroll, no-code, three.js, web design, creative coding",
   "memoryRequirements": "2GB RAM",
   "processorRequirements": "Processeur moderne avec WebGL",
@@ -82,7 +82,7 @@
   "@context": "https://schema.org",
   "@type": "Organization", 
   "name": "3D Scroll Animator",
-  "url": "/editor/",
+  "url": "https://gael-berru.com/3Dscrollanimator/",
   "logo": "https://gael-berru.com/img/drone-logo.png",
   "description": "Plateforme no-code de création d'animations 3D interactives pour le web",
   "address": {
@@ -499,6 +499,10 @@
             color: var(--accent-2);
             font-weight: 700;
         }
+        .testimonial a {
+            color: var(--accent);
+            text-decoration: none;
+        }
 
         /* CTA band */
         .cta-band {
@@ -669,12 +673,12 @@
     <div class="hero" data-aos="fade-up" data-aos-duration="900">
         <div class="hero-left">
             <div class="eyebrow">Nouveau — 3D Scroll Animator</div>
-            <h1 class="hero-title">Créez des animations 3D synchronisées au scroll — no code tool</h1>
-            <p class="hero-sub">Importez votre modèle, définissez vos animations liés au scroll,
+            <h1 class="hero-title">Créez des animations 3D fluides synchronisées au scroll — no code tool</h1>
+            <p class="hero-sub">Importez votre modèle, définissez vos animations liés au pourcentage de scroll,
                 exportez un package HTML/CSS/JS prêt à l'emploi ou ouvrez-le directement dans CodePen.</p>
 
             <div class="hero-ctas">
-                <a class="btn-primary" href="./editor/" title="Essayer gratuitement">
+                <a class="btn-primary" href="./app/" title="Essayer gratuitement">
                     <i class="fa-solid fa-rocket"></i> Essayer gratuitement
                 </a>
                 <button class="btn-ghost"
@@ -694,13 +698,13 @@
         <div class="hero-preview">
             <!-- Large live preview iframe (placeholder, remplace l'URL par ton mini demo) loading="lazy" -->
             <div class="preview-frame" title="Aperçu interactif">
-                <img src="../img/tutoexpress.gif" alt="Demo GIF" style="width:100%;height:100%;object-fit:cover;">
+                <img src="./img/tutoexpress.gif" alt="Demo GIF" style="width:100%;height:100%;object-fit:cover;">
             </div>
 
             <div class="preview-actions">
                 <div class="small-ctas">
                     <button class="btn-ghost"
-                        onclick="window.open('./editor/','_blank')"><i
+                        onclick="window.open('./app/','_blank')"><i
                             class="fa-solid fa-arrow-up-right-from-square"></i> Ouvrir l'outil</button>
                     <!--<button class="btn-ghost" onclick="copyDemoURL()"><i class="fa-solid fa-link"></i> Copier
                         lien</button>-->
@@ -720,27 +724,27 @@
             <div class="demo-grid">
                 <div class="demo-iframe">
                     <!-- GIF / short video placeholder -->
-                    <img src="../img/mascotte-bureau-plant.png" alt="Demo GIF" style="width:100%;height:auto;"
+                    <img src="./img/mascotte-bureau-plant.png" alt="Demo GIF" style="width:100%;height:auto;"
                         data-tooltip="Interface simple et facile à prendre en main" data-aos="fade-up"
                         data-aos-delay="1300">
                 </div>
 
                 <div class="demo-iframe" data-aos="fade-left" data-aos-duration="700">
                     <!-- GIF / short video placeholder -->
-                    <img src="../img/mascotte-easy2.png" alt="Demo GIF" style="width:100%;height:auto;"
+                    <img src="./img/mascotte-easy2.png" alt="Demo GIF" style="width:100%;height:auto;"
                         data-tooltip="Génération de code complet prêt à l'emploi" data-aos="fade-up"
                         data-aos-delay="1100">
                 </div>
 
                 <div class="demo-iframe" data-aos="fade-left" data-aos-duration="700">
                     <!-- GIF / short video placeholder -->
-                    <img src="../img/mascotte-sunset.png" alt="Demo GIF" style="width:100%;height:100%;"
+                    <img src="./img/mascotte-sunset.png" alt="Demo GIF" style="width:100%;height:100%;"
                         data-tooltip="Créez vos anim 3D au scroll de votre site en 2 min" data-aos="fade-up"
                         data-aos-delay="1500">
                 </div>
                 <div class="demo-iframe" data-aos="fade-up" data-aos-duration="700">
-                    <!--<iframe src="../img/tuto.mp4?embed=1" title="Démo interactive 2"></iframe>-->
-                    <img src="../img/mascotte-sav.png" alt="Demo GIF" style="width:100%;height:auto;"
+                    <!--<iframe src="./img/tuto.mp4?embed=1" title="Démo interactive 2"></iframe>-->
+                    <img src="./img/mascotte-sav.png" alt="Demo GIF" style="width:100%;height:auto;"
                         data-tooltip="Gagnez des crédits en nous aidant à améliorer le tools" data-aos="fade-up"
                         data-aos-delay="1300">
                 </div>
@@ -802,7 +806,7 @@
                     <div class="kpi">
                         <!-- PHP: Remplace $userCount par ta variable récupérée en backend -->
                         <!-- Ex: <?php $userCount = getUserCountFromDB(); ?> -->
-                        <img class="illu" src="../img/mascotte-code.png">
+                        <img class="illu" src="./img/mascotte-code.png">
                         <div class="num" id="user-count"
                             data-count="<?php echo isset($userCount) ? $userCount : 127; ?>">24</div>
                         <div class="label">Utilisateurs actifs</div>
@@ -838,22 +842,22 @@
             <div class="testimonials">
                 <div class="testimonial" data-aos="fade-up" data-aos-delay="80">
                     <p>“J’ai réduit mon temps de prototypage de 3D à 20 minutes — incroyable.”</p>
-                    <div class="meta">— Léa, Motion Designer</div>
+                    <div class="meta">— Léa, Motion Designer - <a href="#">Voir son travail</a></div>
                 </div>
                 <div class="testimonial" data-aos="fade-up" data-aos-delay="120">
                     <p>“Parfait pour protos interactifs et pages produit animées.”</p>
-                    <div class="meta">— Karim, Front-end dev</div>
+                    <div class="meta">— Karim, Front-end dev - <a href="#">Voir son travail</a></div>
                 </div>
                 <div class="testimonial" data-aos="fade-up" data-aos-delay="160">
                     <p>“La génération de code est propre et facile à intégrer.”</p>
-                    <div class="meta">— Anna, Freelance</div>
+                    <div class="meta">— Anna, Freelance - <a href="#">Voir son travail</a></div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="stat-box" data-aos="fade-up" data-aos-duration="700" data-aos-delay="90">
-        <img src="../img/mascotte-bureau-plant.png" alt="Demo GIF"
+        <img src="./img/mascotte-bureau-plant.png" alt="Demo GIF"
             style="width:100%;height:auto;object-fit:cover;max-height:240px;border-radius:8px;" data-aos="fade-up"
             data-aos-duration="700" data-aos-delay="80">
     </div>
@@ -865,10 +869,10 @@
             <p>Essaye gratuitement — import, animation, export et partage sans installation.</p>
         </div>
         <div class="action">
-            <a class="btn-primary" href="./editor/index.php" title="Essayer gratuitement">
+            <a class="btn-primary" href="./app/" title="Essayer gratuitement">
                 <i class="fa-solid fa-rocket"></i> Essayer gratuitement
             </a>
-            <a class="btn-ghost" href="contact.php">Contact</a>
+            <a class="btn-ghost" href="./contact.php">Contact</a>
         </div>
     </div>
 

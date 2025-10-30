@@ -1,54 +1,55 @@
 ## Proto 3
 
-### Génerateur d'effet 3D au scroll de ton site
+### Générateur d’effet 3D au scroll de ton site
 
-  
-  
+#### Steps :
 
-#### Step :
+      ✅ Créer le générateur d’animation 3D synchronisé au scroll via Three.js  
+      ✅ Back-end PHP + SQL pour users & projets  
+      ✅ Gamification 💎  
+      ✅ Système de paiement  
+      ➡️ Renseigner les API key (Lemon en cours)  
+      ✅ Identité visuelle + mascotte  
+      ✅ Landing page  
+      ✅ Version locale fonctionnelle  
+      ✅ Version hébergée fonctionnelle  
+      ➡️ Nouvelle base + nom de domaine  
+      ➡️ Restructuration propre (bug de path, comme toujours 😅)
 
-   ✅ Créer le génerateur d'animation d'objet 3D syncronisé au scroll via
-   threejs
-   
-   ✅ PHP et SQL pour gérer les users, save_projetc ...
-   
-   ✅ Mettre en place un comteur de points 🪙
-   
-   ✅ Mettre en place le system de paiment
-   
-   ➡️ Renseigner les api key
-   
-   ✅ Créer une identité visuel, mascotte ...
-   
-   ✅ Landing page
-   
-     
-   
-   ✅ Version local fonctionnel
-   
-   ✅ Version host fonctionnel
-   
-   ➡️ Heberger le proto sur une base neuve + domain ...
 
-  
+```js
+& {
 
-    & {
-    
-    ➡️ Pub
-    
-    ➡️ retours
-    
-    ➡️ améliorations..
-    
-    return;
-    
-    }
+   ➡️ Lancer la pub 🚀  
+   ➡️ Observer les retours   
+   ➡️ Écouter le marché  
+
+   if (clients >= seuil_de_vie_du_projet) {
+       améliorer(le_tool);
+       sublimer(l’expérience);
+       célébrer(les_users);
+   } else {
+       analyser(les_failles);
+       explorer(les_pistes_inédites);
+       if (potentiel_du_tool > seuil_minimum) {
+           itérer(encore);
+           nourrir(le_proto);
+       } else {
+           archiver(la_version);
+           passer_au_saas_3();
+           keep(dreaming);
+       }
+   }
+
+   return "Construire, apprendre, recommencer — jusqu’à plus soif";
+}
+
 
 
 ## 1. Objectif Principal
 
-💰 Générer 2000 € de CA / mois d’ici fin décembre
-🎯 En positionnant 3D Scroll Animator comme l’outil de référence des animations 3D no-code pour le web
+      Générer 200 € de CA / mois d’ici fin décembre
+      En positionnant 3D Scroll Animator comme un tool singulier de simplicité et utile
 
 ## 2. Positionnement
 🎨 Ciblage

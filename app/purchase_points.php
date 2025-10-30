@@ -1,6 +1,6 @@
 <?php
 // purchase_points.php
-require_once './includes/config.php';
+require_once 'config.php';
 require_once 'auth.php';
 
 class PointPurchase
