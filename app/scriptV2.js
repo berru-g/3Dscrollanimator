@@ -124,6 +124,133 @@ function showAlert(message, type = 'info') {
 class GainAnimator {
     constructor() {
         this.container = null;
+        this.sounds = {}; // Stockage des sons
+        this.init();
+        this.loadSounds();
+    }
+
+    init() {
+        // Créer le container des animations
+        this.container = document.createElement('div');
+        this.container.className = 'gain-animation';
+        document.body.appendChild(this.container);
+    }
+
+    // Charger les sons
+    loadSounds() {
+        this.sounds = {
+            points: new Audio('../sounds/points.mp3'),
+            gems: new Audio('../sounds/gems.mp3'),
+            premium: new Audio('../sounds/premium.mp3'),
+            coin: new Audio('../sounds/coin.mp3'),
+            star: new Audio('../sounds/star.mp3')
+        };
+
+        // Précharger les sons
+        Object.values(this.sounds).forEach(sound => {
+            sound.preload = 'auto';
+            sound.volume = 0.3; // Volume à 30% pour pas être agressif
+        });
+    }
+
+    // Jouer un son selon le type
+    playSound(type) {
+        const sound = this.sounds[type];
+        if (sound) {
+            // Réinitialiser et jouer
+            sound.currentTime = 0;
+            sound.play().catch(e => console.log('Son non joué (autoplay block):', e));
+        }
+    }
+
+    // Animation principale
+    showGain(amount, type = 'points', message = null) {
+        // Nettoyer les anciennes animations
+        this.clearAnimations();
+
+        // 🔊 JOUER LE SON
+        this.playSound(type);
+
+        // Créer les particules
+        this.createParticles(amount, type);
+
+        // Afficher la notification
+        if (message) {
+            setTimeout(() => {
+                notify.success(message);
+            }, 800);
+        }
+
+        // Animer le compteur si présent
+        this.animateCounter();
+    }
+
+    createParticles(amount, type) {
+        const symbols = {
+            points: '💎',
+            gems: '💎', 
+            premium: '👑',
+            coin: '🪙',
+            star: '⭐'
+        };
+
+        const symbol = symbols[type] || '💎';
+        const text = `+${amount}${symbol}`;
+
+        // Créer 3 particules pour l'effet d'explosion
+        for (let i = 0; i < 3; i++) {
+            const particle = document.createElement('div');
+            particle.className = `gain-particle ${type}`;
+            particle.textContent = text;
+            particle.style.setProperty('--index', i);
+            
+            this.container.appendChild(particle);
+        }
+
+        // Nettoyer après l'animation
+        setTimeout(() => this.clearAnimations(), 2000);
+    }
+
+    animateCounter() {
+        // Animer le compteur de points dans le header
+        const counter = document.querySelector('.user-points, .points-counter, [class*="points"]');
+        if (counter) {
+            counter.classList.add('pulse');
+            setTimeout(() => counter.classList.remove('pulse'), 600);
+        }
+    }
+
+    clearAnimations() {
+        if (this.container) {
+            this.container.innerHTML = '';
+        }
+    }
+
+    // Méthodes pratiques
+    showPoints(amount, message = null) {
+        this.showGain(amount, 'points', message);
+    }
+
+    showGems(amount, message = null) {
+        this.showGain(amount, 'gems', message);
+    }
+
+    showPremium(amount, message = null) {
+        this.showGain(amount, 'premium', message);
+    }
+}
+
+// Instance globale
+const gainAnimator = new GainAnimator();
+
+// Snippets rapides à utiliser partout
+window.showPointsAnimation = (amount, message) => gainAnimator.showPoints(amount, message);
+window.showGemsAnimation = (amount, message) => gainAnimator.showGems(amount, message);
+window.showPremiumAnimation = (amount, message) => gainAnimator.showPremium(amount, message);
+/* animations  Système d'animations de gains
+class GainAnimator {
+    constructor() {
+        this.container = null;
         this.init();
     }
 
@@ -216,7 +343,7 @@ window.showPointsAnimation = (amount, message) => gainAnimator.showPoints(amount
 window.showGemsAnimation = (amount, message) => gainAnimator.showGems(amount, message);
 window.showPremiumAnimation = (amount, message) => gainAnimator.showPremium(amount, message);
 
-
+*/
 
 // Variables globales 3D THREEJS
 let scene, camera, renderer, controls;

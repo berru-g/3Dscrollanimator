@@ -116,6 +116,11 @@ $totalPoints = $stmt->fetch()['total_points'] ?? 0;
                     <summary>Puis-je utiliser le code généré commercialement ?</summary>
                     <p>Oui ! Tout le code généré est 100% vôtre, sans restriction d'usage et facilement implémentable dans n'importe quel site.</p>
                 </details>
+
+                <details class="faq-item">
+                    <summary>Comment recharger mes crédits ?</summary>
+                    <p>Le paiement sécurisé s'effectue via LemonSqueezie en Euro ou en Solana via le wallet Phantom.</p>
+                </details>
             </div>
         </div>
 
