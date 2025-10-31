@@ -1523,6 +1523,57 @@ select {
 }
 
 
+/* GUIDE onboarding */
+/* Personnalisation Intro.js pour ton thème */
+.introjs-tooltip {
+    background: var(--grey-light) !important;
+    border: 2px solid var(--primary) !important;
+    border-radius: 12px !important;
+    color: var(--text) !important;
+    min-width: 300px;
+}
+
+.introjs-tooltip-header {
+    border-bottom: 1px solid var(--grey) !important;
+}
+
+.introjs-tooltip-title {
+    color: var(--text) !important;
+    font-weight: bold !important;
+}
+
+.introjs-button {
+    background: var(--primary) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 6px !important;
+    text-shadow: none !important;
+}
+
+.introjs-button:hover {
+    background: var(--primary-dark) !important;
+}
+
+.introjs-button.introjs-prevbutton {
+    background: var(--grey) !important;
+    color: var(--text) !important;
+}
+
+.introjs-bullets ul li a {
+    background: var(--grey) !important;
+}
+
+.introjs-bullets ul li a.active {
+    background: var(--primary) !important;
+}
+
+.introjs-helperLayer {
+    box-shadow: 0 0 0 10000px rgba(0,0,0,0.7), 
+                0 0 0 4px var(--primary),
+                0 0 20px rgba(139, 69, 255, 0.5) !important;
+    border-radius: 8px !important;
+}
+
 /* ====== GALLERY PAGE ====== */
 .search-bar {
     max-width: 500px;

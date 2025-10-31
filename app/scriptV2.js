@@ -12,7 +12,7 @@ class NotificationSystem {
         return {
             success: new Audio('../sounds/notification-success.mp3'),
             error: new Audio('../sounds/notification-error.mp3'),
-            warning: new Audio('../sounds/notification-warning.mp3'),
+            warning: new Audio('../sounds/ui-click-menu-modern-interface-select-small.mp3'),
             info: new Audio('../sounds/notification-info.mp3')
         };
     }
@@ -374,6 +374,151 @@ window.showGemsAnimation = (amount, message) => gainAnimator.showGems(amount, me
 window.showPremiumAnimation = (amount, message) => gainAnimator.showPremium(amount, message);
 
 */
+
+/* GUIDE onboarding */
+class OnboardingGuide {
+    constructor() {
+        this.steps = [
+            {
+                element: document.querySelector('#import-btn'),
+                intro: '<strong>Étape 1 - Importer</strong><br>Commencez par importer votre modèle 3D ou chargez un exemple',
+                position: 'right'
+            },
+            {
+                element: document.querySelector('#add-keyframe'),
+                intro: '<strong>Étape 2 - Keyframes</strong><br>Ajoutez des positions à différents pourcentages de scroll puis ajoutez une keyframes',
+                position: 'top'
+            },
+            {
+                element: document.querySelector('#ruler-track'),
+                intro: '<strong>Étape 3 - Animation Scroll</strong><br>Visualisez et testez votre animation',
+                position: 'top'
+            },
+            {
+                element: document.querySelector('.code-exporter'),
+                intro: '<strong>Étape 4 - Export</strong><br>Générez votre code Three.js prêt à l\'emploi !',
+                position: 'left'
+            }
+        ].filter(step => step.element !== null); // Supprime les steps si élément pas trouvé
+    }
+
+    start() {
+        if (localStorage.getItem('onboarding_completed')) {
+            return;
+        }
+
+        // Vérifier qu'Intro.js est chargé
+        if (typeof introJs === 'undefined') {
+            console.error('Intro.js non chargé');
+            this.showFallbackGuide();
+            return;
+        }
+
+        const intro = introJs();
+        intro.setOptions({
+            steps: this.steps,
+            showProgress: true,
+            showBullets: true,
+            exitOnOverlayClick: false,
+            hidePrev: true,
+            hideNext: false,
+            nextLabel: 'Suivant →',
+            prevLabel: '← Précédent',
+            doneLabel: 'Terminer',
+            tooltipPosition: 'auto',
+            positionPrecedence: ['right', 'left', 'top', 'bottom']
+        });
+
+        intro.oncomplete(() => {
+            this.onComplete();
+        });
+
+        intro.onexit(() => {
+            this.onComplete();
+        });
+
+        // Démarrer avec un délai
+        setTimeout(() => {
+            intro.start();
+        }, 1500);
+    }
+
+    showFallbackGuide() {
+        // Fallback simple si Intro.js échoue
+        const steps = [
+            'Étape 1: Cliquez sur "Importer un modèle"',
+            'Étape 2: Ajoutez des keyframes avec le bouton +',
+            'Étape 3: Utilisez la règle pour tester l\'animation', 
+            'Étape 4: Exportez votre code dans la section basse'
+        ];
+
+        steps.forEach((step, index) => {
+            setTimeout(() => {
+                notify.info(step, `Étape ${index + 1}`, { duration: 4000 });
+            }, index * 3000);
+        });
+    }
+
+    onComplete() {
+        localStorage.setItem('onboarding_completed', 'true');
+        notify.success('Guide terminé ! À vous de créer ', 'Bienvenue');
+        
+        if (currentUser && !localStorage.getItem('onboarding_bonus_given')) {
+            addPoints(25);
+            localStorage.setItem('onboarding_bonus_given', 'true');
+            setTimeout(() => {
+                showPointsAnimation(25, 'Bonus guide +25💎');
+            }, 1000);
+        }
+    }
+
+    restart() {
+        localStorage.removeItem('onboarding_completed');
+        localStorage.removeItem('onboarding_bonus_given');
+        this.start();
+    }
+}
+
+// Initialisation du guide au chargement
+let onboarding;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Attendre que l'UI soit complètement chargée
+    setTimeout(() => {
+        onboarding = new OnboardingGuide();
+        onboarding.start();
+        addHelpButton();
+    }, 1000);
+});
+
+function addHelpButton() {
+    // Vérifier si le bouton existe déjà
+    if (document.querySelector('.help-guide-btn')) return;
+
+    const helpBtn = document.createElement('button');
+    helpBtn.className = 'btn-cta help-guide-btn';
+    helpBtn.innerHTML = 'Guide ?';
+    helpBtn.style.marginLeft = '0px';
+    
+    helpBtn.onclick = () => {
+        if (onboarding) {
+            onboarding.restart();
+        } else {
+            notify.info('Importez un modèle → Ajoutez des keyframes → Testez → Exportez !', 'Guide rapide');
+        }
+    };
+    
+    // Ajouter dans le header près de la navigation user
+    const header = document.querySelector('header');
+    const userMenu = document.querySelector('.user-menu, .guest-menu');
+    
+    if (header && userMenu) {
+        header.insertBefore(helpBtn, userMenu);
+    } else if (header) {
+        header.appendChild(helpBtn);
+    }
+}
+
 
 // Variables globales 3D THREEJS
 let scene, camera, renderer, controls;
