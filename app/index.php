@@ -267,6 +267,10 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                     <i class="fa-regular fa-square-plus"></i> Importer un modèle
                     3D</button>
 
+                <!--<button class="btn btn-secondary" onclick="sketchFabBrowser.showBrowser()">
+                    <i class="fa-solid fa-search"></i> Librairie SketchFab
+                </button>-->
+
                 <button class="btn btn-secondary" onclick="loadTestModel()">Charger modèle test</button>
 
                 <!-- Bouton Record pour utilisateurs connectés -->

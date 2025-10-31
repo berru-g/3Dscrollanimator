@@ -999,6 +999,94 @@ select {
     }
 }
 
+/* Modal sketchfab */
+.sketchfab-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 10000;
+    padding: 2rem 0;
+    overflow-y: auto;
+}
+
+.sketchfab-modal {
+    background: var(--grey-light);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 1200px;
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.search-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--grey);
+    background: var(--grey);
+    color: var(--text);
+}
+
+.models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.model-card {
+    background: var(--grey);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.model-card:hover {
+    transform: translateY(-5px);
+}
+
+.model-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.model-info {
+    padding: 1rem;
+}
+
+.model-info h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text);
+}
+
+.model-info p {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.model-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
 /* Styles pour la modal de sauvegarde */
 .modal {
     position: fixed;

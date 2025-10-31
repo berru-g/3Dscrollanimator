@@ -1,10 +1,29 @@
 // Éditeur 3D No-Code - Approche éprouvée
 // systeme d'alert 
-// Système de notifications élégant
+// Système de notifications élégant + son 
 class NotificationSystem {
     constructor() {
         this.container = document.getElementById('notification-container');
         this.notifications = new Set();
+        this.sounds = this.loadSounds();
+    }
+
+    loadSounds() {
+        return {
+            success: new Audio('../sounds/notification-success.mp3'),
+            error: new Audio('../sounds/notification-error.mp3'),
+            warning: new Audio('../sounds/notification-warning.mp3'),
+            info: new Audio('../sounds/notification-info.mp3')
+        };
+    }
+
+    playSound(type) {
+        const sound = this.sounds[type];
+        if (sound) {
+            sound.currentTime = 0;
+            sound.volume = 0.4; // Volume modéré
+            sound.play().catch(e => console.log('Son notification ignoré:', e));
+        }
     }
 
     show(options) {
@@ -13,8 +32,14 @@ class NotificationSystem {
             title = '',
             message = '',
             duration = 5000,
-            dismissible = true
+            dismissible = true,
+            sound = true // Nouvelle option : activer/désactiver le son
         } = options;
+
+        // 🔊 JOUER LE SON
+        if (sound) {
+            this.playSound(type);
+        }
 
         // Créer la notification
         const notification = document.createElement('div');
@@ -73,21 +98,26 @@ class NotificationSystem {
         return notification;
     }
 
-    // Méthodes pratiques
-    success(message, title = 'Succès') {
-        return this.show({ type: 'success', title, message });
+    // Méthodes pratiques AVEC SONS
+    success(message, title = 'Succès', options = {}) {
+        return this.show({ type: 'success', title, message, ...options });
     }
 
-    error(message, title = 'Erreur') {
-        return this.show({ type: 'error', title, message });
+    error(message, title = 'Erreur', options = {}) {
+        return this.show({ type: 'error', title, message, ...options });
     }
 
-    warning(message, title = 'Attention') {
-        return this.show({ type: 'warning', title, message });
+    warning(message, title = 'Attention', options = {}) {
+        return this.show({ type: 'warning', title, message, ...options });
     }
 
-    info(message, title = 'Information') {
-        return this.show({ type: 'info', title, message });
+    info(message, title = 'Information', options = {}) {
+        return this.show({ type: 'info', title, message, ...options });
+    }
+
+    // Méthode SANS SON (pour les notifications silencieuses)
+    silent(message, title = 'Information', type = 'info') {
+        return this.show({ type, title, message, sound: false });
     }
 
     // Fermer toutes les notifications
@@ -888,6 +918,154 @@ document.getElementById('project-title').addEventListener('keypress', function (
         confirmSaveProject();
     }
 });
+
+// function et modal pour Sketchfab api
+class SketchFabBrowser {
+    constructor() {
+        this.apiUrl = 'https://api.sketchfab.com/v3/search';
+        this.models = [];
+    }
+
+    showBrowser() {
+        const modalHTML = `
+            <div class="sketchfab-modal-overlay">
+                <div class="sketchfab-modal">
+                    <div class="modal-header">
+                        <h3>Bibliothèque SketchFab</h3>
+                        <button onclick="close">&times;</button>
+                    </div>
+                    
+                    <div class="search-bar">
+                        <input type="text" id="sketchfab-search" placeholder="Rechercher un modèle 3D...">
+                        <button onclick="sketchFabBrowser.search()"><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="category-filter">
+                            <option value="">Toutes catégories</option>
+                            <option value="characters">Personnages</option>
+                            <option value="vehicles">Véhicules</option>
+                            <option value="architecture">Architecture</option>
+                        </select>
+                    </div>
+                    
+                    <div class="models-grid" id="models-grid">
+                        <div class="loading">Chargement des modèles populaires...</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        this.loadPopularModels();
+    }
+
+    async search() {
+        const query = document.getElementById('sketchfab-search').value;
+        const category = document.getElementById('category-filter').value;
+        
+        const params = new URLSearchParams({
+            q: query,
+            type: 'models',
+            downloadable: true,
+            sort_by: '-publishedAt'
+        });
+        
+        if (category) params.append('categories', category);
+
+        try {
+            const response = await fetch(`${this.apiUrl}?${params}`);
+            const data = await response.json();
+            this.displayModels(data.results);
+        } catch (error) {
+            console.error('Erreur recherche SketchFab:', error);
+        }
+    }
+
+    async loadPopularModels() {
+        // Modèles éducatifs populaires pour débuter
+        const params = new URLSearchParams({
+            type: 'models',
+            downloadable: true,
+            sort_by: '-likeCount',
+            categories: 'characters,vehicles',
+            count: 12
+        });
+
+        try {
+            const response = await fetch(`${this.apiUrl}?${params}`);
+            const data = await response.json();
+            this.displayModels(data.results);
+        } catch (error) {
+            console.error('Erreur SketchFab:', error);
+        }
+    }
+
+    displayModels(models) {
+        const grid = document.getElementById('models-grid');
+        grid.innerHTML = '';
+
+        models.forEach(model => {
+            const modelCard = `
+                <div class="model-card" onclick="sketchFabBrowser.selectModel('${model.uid}')">
+                    <img src="${model.thumbnails.images[0].url}" alt="${model.name}">
+                    <div class="model-info">
+                        <h4>${model.name}</h4>
+                        <p>Par ${model.user.username}</p>
+                        <div class="model-stats">
+                            <span><i class="fas fa-heart"></i> ${model.likeCount}</span>
+                            <span><i class="fas fa-eye"></i> ${model.viewCount}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            grid.insertAdjacentHTML('beforeend', modelCard);
+        });
+    }
+
+    async selectModel(modelId) {
+        try {
+            notify.info('Téléchargement du modèle...', 'SketchFab');
+            
+            // Récupérer les infos détaillées
+            const response = await fetch(`https://api.sketchfab.com/v3/models/${modelId}`);
+            const model = await response.json();
+            
+            // Télécharger le modèle GLTF
+            if (model.download && model.download.gltf) {
+                await this.downloadModel(model.download.gltf.url, model.name);
+            } else {
+                notify.error('Modèle non téléchargeable', 'SketchFab');
+                this.closeModal();
+            }
+        } catch (error) {
+            console.error('Erreur sélection modèle:', error);
+            this.closeModal();
+        }
+    }
+
+    async downloadModel(downloadUrl, modelName) {
+        try {
+            const response = await fetch(downloadUrl);
+            const blob = await response.blob();
+            const file = new File([blob], `${modelName}.glb`, { type: 'model/gltf-binary' });
+            
+            // Charger dans Three.js
+            loadModel(file);
+            this.closeModal();
+            
+            notify.success(`${modelName} chargé !`, 'SketchFab');
+        } catch (error) {
+            console.error('Erreur téléchargement:', error);
+        }
+    }
+
+    closeModal() {
+        const modal = document.querySelector('.sketchfab-modal-overlay');
+        if (modal) modal.remove();
+    }
+}
+const sketchFabBrowser = new SketchFabBrowser();
 
 // === NOUVELLES FONCTIONS POUR LA GESTION DES POINTS ===
 
