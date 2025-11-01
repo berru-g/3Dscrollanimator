@@ -498,7 +498,7 @@ function addHelpButton() {
     const helpBtn = document.createElement('button');
     helpBtn.className = 'btn-ghost help-guide-btn';
     helpBtn.innerHTML = 'Guide ?';
-    helpBtn.style.marginLeft = '0px';
+    helpBtn.style.marginLeft = '10px';
     
     helpBtn.onclick = () => {
         if (onboarding) {
@@ -2375,6 +2375,7 @@ class UnifiedPaymentSystem {
             .option-icon {
                 font-size: 2rem;
                 margin-right: 1rem;
+                fill: var(--text);
             }
 
             .option-content {

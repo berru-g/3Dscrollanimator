@@ -253,6 +253,9 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                     <p>3. Définissez le pourcentage de scroll et ajustez les propriétés</p>
                     <p>4. Ajoutez des keyframes pour créer l'animation</p>
                     <p>5. Copiez le code généré pour l'utiliser sur votre site</p>
+                    <!--<button class="btn help-guide-btn" onclick="onboarding.restart()">
+                    <i class="fa-solid fa-search"></i> Suivez le guide
+                </button>-->
                     <?php if (!Auth::isLoggedIn()): ?>
                         <p style="color: var(--primary); margin-top: 10px;">
                             <strong>100 💎 offert :</strong> <a href="register.php" style="color: var(--primary);">Essayer
@@ -268,6 +271,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                 <button class="btn" id="import-btn">
                     <i class="fa-regular fa-square-plus"></i> Importer un modèle
                     3D</button>
+
 
                 <!--<button class="btn btn-secondary" onclick="sketchFabBrowser.showBrowser()">
                     <i class="fa-solid fa-search"></i> Librairie SketchFab
