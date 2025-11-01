@@ -381,12 +381,12 @@ class OnboardingGuide {
         this.steps = [
             {
                 element: document.querySelector('#import-btn'),
-                intro: '<strong>Étape 1 - Importer</strong><br>Commencez par importer votre modèle 3D ou chargez un exemple',
+                intro: '<strong>Étape 1 - Importer</strong><br>Commencez par importer votre modèle 3D au format glb ou gltf ou chargez un exemple',
                 position: 'right'
             },
             {
                 element: document.querySelector('#add-keyframe'),
-                intro: '<strong>Étape 2 - Keyframes</strong><br>Ajoutez des positions à différents pourcentages de scroll puis ajoutez une keyframes',
+                intro: '<strong>Étape 2 - Keyframes</strong><br>Jouez avec vos positions à différents pourcentages de scroll puis ajoutez une keyframes',
                 position: 'top'
             },
             {
@@ -1528,8 +1528,8 @@ function generateHTMLCode() {
       <div class="intro">
             <h2>Hello word</h2>
             <p>Bienvenue sur mon site</p>
-        <img src="https://gael-berru.com/img/mascotte-easy2.png">
-        <p>Crée par <strong>"votre nom"</strong> avec <a href="https://gael-berru.com/3Dscrollanimator/">3D scroll animator.com</a></p>
+        <img src="https://3dscrollanimator.com/img/mascotte-easy2.png">
+        <p>Crée par <strong>"votre nom"</strong> avec <a href="https://3dscrollanimator.com/">3D scroll animator.com</a></p>
         </div>
         
         <div class="scroll-space"></div>
@@ -1540,7 +1540,7 @@ function generateHTMLCode() {
         </div>
         
         <footer>
-            <p>Créé avec l'Éditeur 3D Scroll Animator No-Code by <a href="https://gael-berru.com/3Dscrollanimator/">berru-g</a></p>
+            <p>Créé avec l'Éditeur 3D Scroll Animator No-Code by <a href="https://3dscrollanimator.com/">3dscrollanimator.com</a></p>
         </footer>
     </div>
 
@@ -1553,7 +1553,7 @@ function generateHTMLCode() {
 }
 
 function generateCSSCode() {
-    return `/* Code généré par https://gael-berru.com/3Dscrollanimator/ Éditeur 3D No-Code */
+    return `/* Code généré par https://3dscrollanimator.com/ Éditeur 3D No-Code */
 * {
     margin: 0;
     padding: 0;
@@ -1797,7 +1797,7 @@ function loadTestModel() {
     const loader = new THREE.GLTFLoader();
 
     // URL du modèle test , credit en readme:
-    
+    //https://raw.githubusercontent.com/berru-g/3Dscrollanimator/refs/heads/main/model3D/tv01_stage.glb
     const modelUrl = 'https://raw.githubusercontent.com/berru-g/berru-g/refs/heads/main/img/drone.glb';
 
     // Afficher le loading

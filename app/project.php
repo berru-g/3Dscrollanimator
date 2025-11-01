@@ -3,6 +3,7 @@
 require_once 'config.php';
 require_once 'auth.php';
 require_once 'projects.php';
+require_once 'header.php';
 
 $projectId = $_GET['id'] ?? 0;
 $project = ProjectManager::getProject($projectId);
@@ -41,29 +42,7 @@ $isLiked = Auth::isLoggedIn() ? ProjectManager::isLikedByUser($projectId, $_SESS
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <header class="header">
-        <a href="index.php" class="logo">3D Scroll Animator</a>
-        <nav class="nav-links">
-            <a href="index.php">Éditeur</a>
-            <a href="gallery.php">Galerie</a>
-            <a href="dashboard.php">Dashboard</a>
-        </nav>
-        <div class="auth-section">
-            <?php if (Auth::isLoggedIn()): ?>
-                <div class="user-menu">
-                    <span class="user-avatar"><?= strtoupper(substr($_SESSION['user_name'], 0, 1)) ?></span>
-                    <span class="user-name"><?= htmlspecialchars($_SESSION['user_name']) ?></span>
-                    <a href="dashboard.php" class="btn btn-secondary">Dashboard</a>
-                    <a href="?logout" class="btn btn-secondary">Déconnexion</a>
-                </div>
-            <?php else: ?>
-                <div class="auth-buttons">
-                    <a href="login.php" class="btn btn-secondary">Connexion</a>
-                    <a href="register.php" class="btn btn-primary">Inscription</a>
-                </div>
-            <?php endif; ?>
-        </div>
-    </header>
+   
 
     <main style="padding: 2rem; max-width: 800px; margin: 0 auto;">
         <article style="background: var(--dark); border: 1px solid var(--border); border-radius: 12px; padding: 2rem;">

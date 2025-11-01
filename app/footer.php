@@ -89,7 +89,7 @@ $totalPoints = $stmt->fetch()['total_points'] ?? 0;
             <div class="link-group">
                 <h4>Support</h4>
                 <ul>
-                    <li><a href="contact.php">Centre d'aide</a></li>
+                    <li><a href="readme.md">Crédits model 3D</a></li>
                     <li><a href="contact.php">Contact</a></li>
                     <li><a href="contact.php">Status</a></li>
                     <li><a href="contact.php">Feedback</a></li>
