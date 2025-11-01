@@ -21,8 +21,8 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Éditeur d'Animation 3D avec Scroll</title>
-    <link rel="shortcut icon" href="/img/drone-logo.png" />
-    <link rel="apple-touch-icon" href="/img/drone-logo.png" />
+    <link rel="shortcut icon" href="/img/3Dscrollanimator-logo.png" />
+    <link rel="apple-touch-icon" href="/img/3Dscrollanimator-logo.png" />
     <meta name="description"
         content="Créez des animations 3D sans une ligne de code. Importez vos modèles 3D, définissez des keyframes et générez du code prêt à l'emploi pour vos projets web.">
     <meta name="keywords"
@@ -33,7 +33,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
     <meta property="og:description"
         content="Créez des animations 3D sans une ligne de code. Importez vos modèles 3D, définissez des keyframes et générez du code prêt à l'emploi pour vos projets web.">
     <meta property="og:image"
-        content="https://raw.githubusercontent.com/berru-g/berru-g/refs/heads/main/img/3dscrollanimator_preview.png">
+        content="https://raw.githubusercontent.com/berru-g/berru-g/refs/heads/main/img/3Dscrollanimator-logo.png">
     <meta property="og:url" content="https://3dscrollanimator.com">
     <link rel="canonical" href="https://3dscrollanimator.com" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -78,18 +78,18 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
     {
       "@type": "ImageObject",
       "caption": "Interface de l'éditeur 3D no-code",
-      "url": "https://3dscrollanimator.com/img/3Dscrollanimator.png"
+      "url": "https://3dscrollanimator.com/img/3Dscrollanimator-logo.png"
     },
     {
       "@type": "ImageObject", 
       "caption": "Galerie des créations utilisateurs",
-      "url": "https://3dscrollanimator.com/img/3Dscrollanimator.png"
+      "url": "https://3dscrollanimator.com/img/3Dscrollanimator-logo.png"
     }
   ],
   "softwareVersion": "1.0",
   "releaseNotes": "Version initiale avec éditeur 3D, système de keyframes et export de code",
-  "downloadUrl": "https://3dscrollanimator.com/3Dscrollanimator/",
-  "url": "https://3dscrollanimator.com/3Dscrollanimator/",
+  "downloadUrl": "https://3dscrollanimator.com/app/",
+  "url": "https://3dscrollanimator.com/app/",
   "keywords": "animation 3D, scroll, no-code, three.js, web design, creative coding",
   "memoryRequirements": "2GB RAM",
   "processorRequirements": "Processeur moderne avec WebGL",
@@ -103,7 +103,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
   "@type": "Organization", 
   "name": "3D Scroll Animator",
   "url": "https://3dscrollanimator.com/3Dscrollanimator/",
-  "logo": "https://3dscrollanimator.com/img/drone-logo.png",
+  "logo": "https://3dscrollanimator.com/img/3Dscrollanimator-logo.png",
   "description": "Plateforme no-code de création d'animations 3D interactives pour le web",
   "address": {
     "@type": "PostalAddress",

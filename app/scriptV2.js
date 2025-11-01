@@ -496,7 +496,7 @@ function addHelpButton() {
     if (document.querySelector('.help-guide-btn')) return;
 
     const helpBtn = document.createElement('button');
-    helpBtn.className = 'btn-cta help-guide-btn';
+    helpBtn.className = 'btn-ghost help-guide-btn';
     helpBtn.innerHTML = 'Guide ?';
     helpBtn.style.marginLeft = '0px';
     
@@ -1796,7 +1796,8 @@ function loadTestModel() {
 
     const loader = new THREE.GLTFLoader();
 
-    // URL du modèle test (drone.glb depuis ton repo GitHub)
+    // URL du modèle test , credit en readme:
+    
     const modelUrl = 'https://raw.githubusercontent.com/berru-g/berru-g/refs/heads/main/img/drone.glb';
 
     // Afficher le loading

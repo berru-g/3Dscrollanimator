@@ -5,6 +5,12 @@ Créez des animations 3D fluides synchronisées au scroll — no code tool.
 Importez votre modèle, définissez vos animations liés au pourcentage de scroll,
 exportez un package HTML/CSS/JS prêt à l'emploi ou ouvrez-le directement dans CodePen.
 
+##### Model 3D crédit :
+    - "Nike TC 7900 Sail" (https://skfb.ly/oF7pX) by SofiaWolfie is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+    - "TV01 Stage" (https://skfb.ly/pzJwO) by zHairezt is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+    - "Cartoon Cyberpunk City Alley" (https://skfb.ly/pABpG) by carlcapu9 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+    - "Fantasy Town" (https://skfb.ly/6ZUUF) by Eh is licensed under Creative Commons Attribution-NonCommercial (http://creativecommons.org/licenses/by-nc/4.0/).
+
 
 #### Steps :
 
@@ -19,6 +25,7 @@ exportez un package HTML/CSS/JS prêt à l'emploi ou ouvrez-le directement dans 
       ✅ Version hébergée fonctionnelle  
       ➡️ Nouvelle base + nom de domaine  
       ➡️ Restructuration propre (bug de path, comme toujours 😅)
+      ➡️ Créer page tuto ou blog pour partager les tips, communiquer avec la commu et seo ;)
 
 
 ```js
