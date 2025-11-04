@@ -31,7 +31,7 @@ exportez un package HTML/CSS/JS prêt à l'emploi ou ouvrez-le directement dans 
 ```js
 & {
 
-   ➡️ Lancer la pub 🚀  
+   ➡️ Lancer la pub   
    ➡️ Observer les retours   
    ➡️ Écouter le marché  
 

@@ -274,7 +274,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
 
 
                 <!--<button class="btn btn-secondary" onclick="sketchFabBrowser.showBrowser()">
-                    <i class="fa-solid fa-search"></i> Librairie SketchFab
+                    <i class="fa-solid fa-cube"></i> Librairie SketchFab
                 </button>-->
 
                 <button class="btn btn-secondary" onclick="loadTestModel()">Charger modèle test</button>

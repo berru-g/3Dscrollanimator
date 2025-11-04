@@ -1082,7 +1082,7 @@ class SketchFabBrowser {
                     
                     <div class="search-bar">
                         <input type="text" id="sketchfab-search" placeholder="Rechercher un modèle 3D...">
-                        <button onclick="sketchFabBrowser.search()"><i class="fas fa-search"></i></button>
+                        <button onclick="sketchFabBrowser.search()" class="btn-ghost"><i class="fas fa-search"></i></button>
                     </div>
                     
                     <div class="filters">
@@ -1342,7 +1342,7 @@ document.getElementById("open-codepen").addEventListener("click", async () => {
     const js = document.getElementById("full-js-code").value;
 
     const data = {
-        title: "Animation 3D Scroll – Export",
+        title: "Template by 3dscrollanimator.com",
         html: html,
         css: css,
         js: js,
@@ -1396,7 +1396,7 @@ function generateCode() {
 }
 
 function generateJSCode() {
-    return `// Code généré - Éditeur 3D No-Code
+    return `// Generate by 3Dscrollanimator.com
 let scene, camera, renderer, model;
 const keyframes = ${JSON.stringify(keyframes, null, 2)};
 
@@ -1420,9 +1420,10 @@ function init() {
     directionalLight.position.set(10, 20, 15);
     scene.add(directionalLight);
     
-    // Charger votre modèle (remplacez l'URL)
+    // Charger votre modèle (remplacez l'URL) 
+    // "Fantasy Town" (https://skfb.ly/6ZUUF) by Eh is licensed under Creative Commons Attribution-NonCommercial (http://creativecommons.org/licenses/by-nc/4.0/).
     const loader = new THREE.GLTFLoader();
-    loader.load('https://raw.githubusercontent.com/berru-g/berru-g/refs/heads/main/img/drone.glb', function(gltf) {
+    loader.load('https://raw.githubusercontent.com/berru-g/berru-g/refs/heads/main/img/fantasy_town.glb', function(gltf) {
         model = gltf.scene;
         scene.add(model);
         
@@ -1520,28 +1521,13 @@ function generateHTMLCode() {
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>3D Scroll Animator</h1>
-            <p>Faites défiler pour voir l'animation</p>
-        </header>
-      
-      <div class="intro">
-            <h2>Hello word</h2>
-            <p>Bienvenue sur mon site</p>
-        <img src="https://3dscrollanimator.com/img/mascotte-easy2.png">
-        <p>Crée par <strong>"votre nom"</strong> avec <a href="https://3dscrollanimator.com/">3D scroll animator.com</a></p>
-        </div>
         
         <div class="scroll-space"></div>
       
-      <div class="intro">
-            <h2>Ton titre</h2>
-            <p>sub title</p>
-        </div>
-        
-        <footer>
-            <p>Créé avec l'Éditeur 3D Scroll Animator No-Code by <a href="https://3dscrollanimator.com/">3dscrollanimator.com</a></p>
-        </footer>
+      <a class="sba-ghost" href="https://3dscrollanimator.com" target="_blank" rel="noopener noreferrer">
+  Powered by 3DScrollAnimator.com
+</a>
+    
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1562,8 +1548,7 @@ function generateCSSCode() {
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: none;
-    color: #cdd6f4;
+    color: #cdd6f4; /*inherit pour l'export wordpress*/
     overflow-x: hidden;
 }
 
@@ -1573,72 +1558,10 @@ body {
   background: transparent;
 }
 
-header {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 2rem;
-}
-
-header h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, #cba6f7 0%, #f5c2e7 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-header p {
-    font-size: 1.2rem;
-    opacity: 0.8;
-}
-.intro {
-  height: 100vh;
-  max-width: 300px;
-    display: flex;
-  margin: 0 auto;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 1rem;
-  border: 1px solid grey;
-  border-radius: 12px;
-}
-
-.intro img{
-  display: flex;
-  margin: 0 auto;
-  width: 250px;
-  border-radius: 8px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-.intro a {
-  text-decoration: none;
-  color: #ab9ff2;
-}
-
 .scroll-space {
-    height: 100vh;
+    height: 100%;
+    min-height: 200vh;
     position: relative;
-}
-
-footer {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    opacity: 0.7;
-}
-footer a {
-    text-decoration: none;
-    color: #f38ba8;
 }
 
 /* Canvas Three.js */
@@ -1649,7 +1572,26 @@ canvas {
     width: 100%;
     height: 100%;
     z-index: 0;
-    background: linear-gradient(135deg, #ab9ff2 4%, #333 100%)
+  /*background: transparent; A implementer dans le code, import pour wordpress */
+    background-image: url('https://raw.githubusercontent.com/berru-g/berru-g/refs/heads/main/img/cgpt.png'); /* changez l'image ici */ 
+}
+
+.sba-ghost{
+  position:fixed;
+  left:10px;
+  bottom:10px;
+  padding:8px 10px;
+  border-radius:8px;
+  font-size:8px;
+  text-decoration:none;
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.9); /*inherit*/
+  backdrop-filter: blur(6px);
+  border:1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 4px 14px rgba(2,6,23,0.25);
+}
+@media (prefers-color-scheme:light){
+  .sba-ghost{ background: rgba(11,92,255,0.06); color:#042a6b; }
 }
 
 /* Responsive */
@@ -1798,7 +1740,7 @@ function loadTestModel() {
 
     // URL du modèle test , credit en readme:
     //https://raw.githubusercontent.com/berru-g/3Dscrollanimator/refs/heads/main/model3D/tv01_stage.glb
-    const modelUrl = 'https://raw.githubusercontent.com/berru-g/berru-g/refs/heads/main/img/drone.glb';
+    const modelUrl = 'https://raw.githubusercontent.com/berru-g/berru-g/refs/heads/main/img/fantasy_town.glb';
 
     // Afficher le loading
     const loadingElement = document.getElementById('loading');
@@ -1870,7 +1812,7 @@ function addExampleKeyframes() {
     };
     keyframes.push(keyframe);
 
-    // Keyframe à 25%
+    /*// Keyframe à 25%
     keyframe = {
         percentage: 25,
         position: { x: 2, y: 1, z: -1 },
@@ -1895,14 +1837,14 @@ function addExampleKeyframes() {
         rotation: { x: 0, y: Math.PI * 1.5, z: Math.PI / 8 },
         scale: { x: 1.1, y: 1.1, z: 1.1 }
     };
-    keyframes.push(keyframe);
+    keyframes.push(keyframe);*/
 
     // Keyframe à 100%
     keyframe = {
         percentage: 100,
-        position: { x: 0, y: 0, z: 0 },
-        rotation: { x: 0, y: Math.PI * 2, z: 0 },
-        scale: { x: 1, y: 1, z: 1 }
+        position: { x: 0, y: 1.4, z: 0 },
+        rotation: { x: 0, y: 6.283185307179586, z: 0 },
+        scale: { x: 3, y: 3, z: 3 }
     };
     keyframes.push(keyframe);
 
