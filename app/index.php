@@ -310,7 +310,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                     <input type="range" id="model-scale" min="0.1" max="3" step="0.1" value="1">
                 </div>
 
-                <div class="input-group">
+                <div class="input-group" id="scrollperc">
                     <label for="keyframe-percentage">Pourcentage de scroll</label>
                     <input type="range" id="keyframe-percentage" min="0" max="100" value="0">
                     <div style="text-align: center; margin-top: 5px;" id="percentage-value">0%</div>

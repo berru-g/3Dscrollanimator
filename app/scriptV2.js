@@ -381,17 +381,22 @@ class OnboardingGuide {
         this.steps = [
             {
                 element: document.querySelector('#import-btn'),
-                intro: '<strong>Étape 1 - Importer</strong><br>Commencez par importer votre modèle 3D au format glb ou gltf ou chargez un exemple',
-                position: 'right'
+                intro: '<strong>Étape 1 - Importer</strong><br> Commencez par importer votre modèle 3D au format glb ou gltf ou chargez le modèle de test.',
+                position: 'right' 
             },
             {
-                element: document.querySelector('#add-keyframe'),
-                intro: '<strong>Étape 2 - Keyframes</strong><br>Jouez avec vos positions à différents pourcentages de scroll puis ajoutez une keyframes',
+                element: document.querySelector('#position-controls'),
+                intro: '<strong>Étape 2 - Scroll</strong><br> Créez votre mouvement',
                 position: 'top'
             },
             {
-                element: document.querySelector('#ruler-track'),
-                intro: '<strong>Étape 3 - Animation Scroll</strong><br>Visualisez et testez votre animation',
+                element: document.querySelector('#add-keyframe'),
+                intro: '<strong>Étape 3 - Keyframes</strong><br> Ajoutez la keyframes',
+                position: 'top'
+            },
+            {
+                element: document.querySelector('#scrollperc'),
+                intro: '<strong>Étape 4 - Animation Scroll</strong><br> Changez votre % de scroll et répetez les étapes 2 et 3 pour créer votre animation !',
                 position: 'top'
             },
             {
