@@ -4,22 +4,22 @@
    Gère le chargement de l'interface utilisateur, l'importation de modèles 3D,
    la définition des keyframes et la génération du code d'animation.
    V_1.2 05/11/2025 gael-berru.com
-
+*/
 header("Cache-Control: no-cache, no-store, must-revalidate");
 header("Pragma: no-cache");
 header("Expires: 0");
-*/
+
 require_once 'config.php';
 require_once 'auth.php';
 require_once 'PointsManager.php';
 
 // Vérifier si un projet doit être chargé
 $loadProjectId = $_GET['load_project'] ?? null;
-/* DEBUG
+// DEBUG
 error_log("=== INDEX.PHP ===");
 error_log("Session ID: " . session_id());
 error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
-*/
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
