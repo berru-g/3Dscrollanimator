@@ -1,5 +1,5 @@
 <?php
-/* index.php
+/* 
    Point d'entrée principal de l'application 3D Scroll Animator.
    Gère le chargement de l'interface utilisateur, l'importation de modèles 3D,
    la définition des keyframes et la génération du code d'animation.

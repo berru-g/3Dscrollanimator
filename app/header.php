@@ -514,64 +514,6 @@ function timeAgo($datetime)
         <div class="header-right">
             <?php if (Auth::isLoggedIn()): ?>
 
-                <!-- Notif debug en cours --
-                 <div class="notification-menu">
-                    <div class="notification-icon">
-                        <i class="fa-regular fa-bell"></i>
-                        <?php if ($unreadCount > 0): ?>
-                            <span class="notification-badge"><?= $unreadCount ?></span>
-                        <?php endif; ?>
-                    </div>
-
-                    !-- DEBUG TEMPORAIRE --
-    <div style="color: white; position: absolute; top: 20px; left: -200px; background: grey; padding: 5px;">
-        Unread: <?= $unreadCount ?> | Notifs count: <?= count($notifications) ?>
-    </div>
-
-                    <div class="notification-dropdown">
-                        <div class="notification-header">
-                            <h4>Notifications</h4>
-                            <?php if ($unreadCount > 0): ?>
-                                <a href="mark_all_read.php" class="mark-all-read">Tout marquer comme lu</a>
-                            <?php endif; ?>
-                        </div>
-
-                        <div class="notification-list">
-                            <?php if (empty($notifications)): ?>
-                                <div class="notification-item empty">
-                                    <i class="fa-regular fa-bell-slash"></i>
-                                    <span>Salut <?= htmlspecialchars($_SESSION['user_name'] ?? '') ?>, rien ici aujourd'hui</span>
-                                </div>
-                            <?php else: ?>
-                                <?php foreach ($notifications as $notif): ?>
-                                    <a href="project.php?id=<?= $notif['project_id'] ?>&notif=<?= $notif['id'] ?>"
-                                        class="notification-item <?= !$notif['is_read'] ? 'unread' : '' ?>">
-                                        <div class="notification-avatar">
-                                            <?= strtoupper(substr($notif['from_username'] ?? 'S', 0, 1)) ?>
-                                        </div>
-                                        <div class="notification-content">
-                                            <strong><?= htmlspecialchars($notif['from_username'] ?? 'Système') ?></strong>
-                                            <?= $notif['message'] ?>
-                                            <div class="notification-project">
-                                                "<?= htmlspecialchars($notif['project_title']) ?>"
-                                            </div>
-                                            <div class="notification-time">
-                                                <?= timeAgo($notif['created_at']) ?>
-                                            </div>
-                                        </div>
-                                    </a>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </div>
-
-                        <div class="notification-footer">
-                            <a href="notifications.php">Voir toutes les notifications</a>
-                        </div>
-                    </div>
-                </div>-->
-
-
-
                 <div class="points-info">
                     <!--<span><?= htmlspecialchars($_SESSION['user_name']) ?></span>-->
                     <strong><span id="current-points"><?= $_SESSION['user_points'] ?? 200 ?></span></strong> 💎
