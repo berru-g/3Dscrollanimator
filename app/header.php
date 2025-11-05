@@ -6,7 +6,7 @@ require_once 'PointsManager.php';
 require_once 'NotificationManager.php';
 $unreadCount = NotificationManager::getUnreadCount($_SESSION['user_id']);
 $notifications = NotificationManager::getUserNotifications($_SESSION['user_id'], 5);
-*/
+
 function timeAgo($datetime)
 {
     $time = strtotime($datetime);
@@ -31,6 +31,7 @@ function timeAgo($datetime)
 
     return 'maintenant';
 }
+    */
 ?>
 <!DOCTYPE html>
 <html lang="fr">
