@@ -2971,6 +2971,11 @@ document.addEventListener('DOMContentLoaded', function () {
 // Notification de mise à jour
 notify.success('Vous pourrez bientôt obtenir des packs 💎', 'Mise à jour');
 
+/*
+const userName = document.querySelector('meta[name="user-name"]')?.content || 'invité';
+notify.success('Vous pourrez bientôt obtenir des packs 💎', `Hey ${userName} !`);*/
+
+
 // 🖱️ Fermer la modal en cliquant à l'extérieur
 document.getElementById('auth-modal').addEventListener('click', function (e) {
     if (e.target === this) closeAuthModal();

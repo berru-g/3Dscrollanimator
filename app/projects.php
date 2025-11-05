@@ -62,20 +62,61 @@ class ProjectManager
         $stmt->execute([$projectId]);
         return $stmt->fetch();
     }
-
+    /*
+        public static function likeProject($projectId, $userId)
+        {
+            $db = getDB();
+            try {
+                $stmt = $db->prepare("
+                    INSERT INTO project_likes (project_id, user_id) 
+                    VALUES (?, ?)
+                ");
+                return $stmt->execute([$projectId, $userId]);
+            } catch (PDOException $e) {
+                // Déjà liké (contrainte unique)
+                return false;
+            }
+        }
+    */
     public static function likeProject($projectId, $userId)
     {
         $db = getDB();
         try {
             $stmt = $db->prepare("
-                INSERT INTO project_likes (project_id, user_id) 
-                VALUES (?, ?)
-            ");
-            return $stmt->execute([$projectId, $userId]);
+            INSERT INTO project_likes (project_id, user_id) 
+            VALUES (?, ?)
+        ");
+            $result = $stmt->execute([$projectId, $userId]);
+
+            // AJOUT: Notifier le propriétaire du projet
+            if ($result) {
+                require_once 'NotificationManager.php';
+                NotificationManager::notifyProjectLiked($projectId, $userId);
+            }
+
+            return $result;
         } catch (PDOException $e) {
             // Déjà liké (contrainte unique)
             return false;
         }
+    }
+
+    public static function addComment($projectId, $userId, $comment)
+    {
+        $db = getDB();
+        $stmt = $db->prepare("
+        INSERT INTO project_comments (project_id, user_id, comment) 
+        VALUES (?, ?, ?)
+    ");
+        $result = $stmt->execute([$projectId, $userId, $comment]);
+
+        // AJOUT: Notifier le propriétaire du projet
+        if ($result) {
+            require_once 'NotificationManager.php';
+            NotificationManager::notifyProjectCommented($projectId, $userId);
+        }
+
+        return $result;
     }
 
     public static function unlikeProject($projectId, $userId)
@@ -87,17 +128,17 @@ class ProjectManager
         ");
         return $stmt->execute([$projectId, $userId]);
     }
-
-    public static function addComment($projectId, $userId, $comment)
-    {
-        $db = getDB();
-        $stmt = $db->prepare("
-            INSERT INTO project_comments (project_id, user_id, comment) 
-            VALUES (?, ?, ?)
-        ");
-        return $stmt->execute([$projectId, $userId, $comment]);
-    }
-
+    /*
+        public static function addComment($projectId, $userId, $comment)
+        {
+            $db = getDB();
+            $stmt = $db->prepare("
+                INSERT INTO project_comments (project_id, user_id, comment) 
+                VALUES (?, ?, ?)
+            ");
+            return $stmt->execute([$projectId, $userId, $comment]);
+        }
+    */
     public static function getProjectComments($projectId)
     {
         $db = getDB();
