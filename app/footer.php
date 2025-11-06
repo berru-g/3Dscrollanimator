@@ -72,7 +72,7 @@ $totalPoints = $stmt->fetch()['total_points'] ?? 0;
                     <li><a href="index.php">Éditeur</a></li>
                     <li><a href="gallery.php">Galerie</a></li>
                     <li><a href="dashboard.php">Dashboard</a></li>
-                    <li><a href="tarif.php">Points & Tarifs</a></li>
+                    <li><a href="cursor.php">Cursor generate</a></li>
                 </ul>
             </div>
 
