@@ -1020,7 +1020,7 @@ select {
     background: var(--grey-light);
     border-radius: 16px;
     padding: 2rem;
-    max-width: 1200px;
+    max-width: 900px;
     width: 95%;
     max-height: 90vh;
     overflow-y: auto;

@@ -1072,7 +1072,7 @@ document.getElementById('project-title').addEventListener('keypress', function (
 // SKETCHFAB BROWSER
 class SketchFabBrowser {
     constructor() {
-        this.apiUrl = '/api/sketchfab-proxy.php'; // ENDPOINT PHP
+        this.apiUrl = '/app/api/sketchfab-proxy.php'; // ENDPOINT PHP
         this.models = [];
     }
 
@@ -1082,7 +1082,7 @@ class SketchFabBrowser {
                 <div class="sketchfab-modal">
                     <div class="modal-header">
                         <h3>Bibliothèque SketchFab</h3>
-                        <button class="close-modal">&times;</button>
+                        <button class="close-btn" onclick="sketchFabBrowser.closeModal()">&times;</button>
                     </div>
                     
                     <div class="search-bar">
