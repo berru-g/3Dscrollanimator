@@ -4,3 +4,4 @@ config1.php
 confighost.php
 webhook.php
 api.php
+/api/

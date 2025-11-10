@@ -1069,7 +1069,202 @@ document.getElementById('project-title').addEventListener('keypress', function (
     }
 });
 
-// function et modal pour Sketchfab api
+// SKETCHFAB BROWSER
+class SketchFabBrowser {
+    constructor() {
+        this.apiUrl = '/api/sketchfab-proxy.php'; // ENDPOINT PHP
+        this.models = [];
+    }
+
+    showBrowser() {
+        const modalHTML = `
+            <div class="sketchfab-modal-overlay">
+                <div class="sketchfab-modal">
+                    <div class="modal-header">
+                        <h3>Bibliothèque SketchFab</h3>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    
+                    <div class="search-bar">
+                        <input type="text" id="sketchfab-search" placeholder="Rechercher un modèle 3D...">
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="category-filter">
+                            <option value="">Toutes catégories</option>
+                            <option value="characters">Personnages</option>
+                            <option value="vehicles">Véhicules</option>
+                            <option value="architecture">Architecture</option>
+                        </select>
+                    </div>
+                    
+                    <div class="models-grid" id="models-grid">
+                        <div class="loading">Chargement des modèles populaires...</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        this.attachEventListeners();
+        this.loadPopularModels();
+    }
+
+    attachEventListeners() {
+        document.querySelector('.close-modal').addEventListener('click', () => {
+            this.closeModal();
+        });
+        
+        document.querySelector('.search-btn').addEventListener('click', () => {
+            this.search();
+        });
+        
+        document.getElementById('sketchfab-search').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.search();
+        });
+        
+        document.getElementById('category-filter').addEventListener('change', () => {
+            this.search();
+        });
+    }
+
+    async search() {
+        const query = document.getElementById('sketchfab-search').value;
+        const category = document.getElementById('category-filter').value;
+        
+        const grid = document.getElementById('models-grid');
+        grid.innerHTML = '<div class="loading">Recherche en cours...</div>';
+
+        try {
+            const params = new URLSearchParams({
+                action: 'search',
+                q: query,
+                category: category
+            });
+
+            const response = await fetch(`${this.apiUrl}?${params}`);
+            
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            
+            const data = await response.json();
+            this.displayModels(data.results);
+        } catch (error) {
+            console.error('Erreur recherche:', error);
+            grid.innerHTML = '<div class="error">Erreur de recherche</div>';
+        }
+    }
+
+    async loadPopularModels() {
+        try {
+            const params = new URLSearchParams({
+                action: 'search',
+                sort_by: '-likeCount',
+                category: 'characters,vehicles'
+            });
+
+            const response = await fetch(`${this.apiUrl}?${params}`);
+            const data = await response.json();
+            this.displayModels(data.results);
+        } catch (error) {
+            console.error('Erreur chargement modèles:', error);
+        }
+    }
+
+    displayModels(models) {
+        const grid = document.getElementById('models-grid');
+        grid.innerHTML = '';
+
+        if (!models || models.length === 0) {
+            grid.innerHTML = '<div class="no-results">Aucun modèle trouvé</div>';
+            return;
+        }
+
+        models.forEach(model => {
+            const modelCard = document.createElement('div');
+            modelCard.className = 'model-card';
+            modelCard.innerHTML = `
+                <img src="${model.thumbnails.images[0]?.url || ''}" alt="${model.name}">
+                <div class="model-info">
+                    <h4>${model.name}</h4>
+                    <p>Par ${model.user.username}</p>
+                    <div class="model-stats">
+                        <span><i class="fas fa-heart"></i> ${model.likeCount}</span>
+                        <span><i class="fas fa-eye"></i> ${model.viewCount}</span>
+                    </div>
+                </div>
+            `;
+            
+            modelCard.addEventListener('click', () => {
+                this.selectModel(model.uid);
+            });
+            
+            grid.appendChild(modelCard);
+        });
+    }
+
+    async selectModel(modelId) {
+        try {
+            notify.info('Vérification du modèle...', 'SketchFab');
+            
+            // Vérifier via le proxy
+            const params = new URLSearchParams({
+                action: 'model',
+                modelId: modelId
+            });
+
+            const response = await fetch(`${this.apiUrl}?${params}`);
+            const model = await response.json();
+            
+            if (model.download && model.download.gltf && model.download.gltf.url) {
+                // Téléchargement direct (le token est protégé par le proxy)
+                await this.downloadModelDirect(model.download.gltf.url, model.name);
+            } else {
+                notify.error('Ce modèle n\'est pas téléchargeable', 'SketchFab');
+            }
+        } catch (error) {
+            console.error('Erreur sélection:', error);
+            notify.error('Erreur lors de la vérification', 'SketchFab');
+        }
+    }
+
+    async downloadModelDirect(downloadUrl, modelName) {
+        try {
+            notify.info('Téléchargement en cours...', 'SketchFab');
+            
+            // Téléchargement direct depuis Sketchfab (URL signée)
+            const response = await fetch(downloadUrl);
+            
+            if (!response.ok) throw new Error('Download failed');
+            
+            const blob = await response.blob();
+            const file = new File([blob], `${modelName}.glb`, { 
+                type: 'model/gltf-binary' 
+            });
+            
+            if (typeof loadModel === 'function') {
+                loadModel(file);
+                this.closeModal();
+                notify.success(`${modelName} chargé !`, 'SketchFab');
+            } else {
+                console.error('Fonction loadModel non trouvée');
+                notify.error('Erreur de chargement dans le viewer', 'SketchFab');
+            }
+            
+        } catch (error) {
+            console.error('Erreur téléchargement:', error);
+            notify.error('Échec du téléchargement', 'SketchFab');
+        }
+    }
+
+    closeModal() {
+        const modal = document.querySelector('.sketchfab-modal-overlay');
+        if (modal) modal.remove();
+    }
+}
+
+const sketchFabBrowser = new SketchFabBrowser();
+/* function et modal pour Sketchfab api
 class SketchFabBrowser {
     constructor() {
         this.apiUrl = 'https://api.sketchfab.com/v3/search';
@@ -1216,7 +1411,7 @@ class SketchFabBrowser {
     }
 }
 const sketchFabBrowser = new SketchFabBrowser();
-
+*/
 // === NOUVELLES FONCTIONS POUR LA GESTION DES POINTS ===
 
 // Fonctions de gestion des points

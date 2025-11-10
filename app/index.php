@@ -140,8 +140,6 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
         gtag('config', 'G-1JTTQTPF3Q');
     </script>
 
-
-
 </head>
 
 <body>
@@ -280,9 +278,9 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                     3D</button>
 
 
-                <!--<button class="btn btn-secondary" onclick="sketchFabBrowser.showBrowser()">
-                    <i class="fa-solid fa-cube"></i> Librairie SketchFab
-                </button>-->
+                <button class="btn btn-secondary" onclick="sketchFabBrowser.showBrowser()">
+                    <i class="fa-solid fa-cube"></i> Import SketchFab
+                </button>
 
                 <button class="btn btn-secondary" onclick="loadTestModel()">Charger modèle test</button>
 
