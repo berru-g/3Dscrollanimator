@@ -1812,7 +1812,11 @@ function setupEventListeners() {
     document.getElementById('import-btn').addEventListener('click', () => {
         document.getElementById('model-input').click();
     });
-
+/*
+    document.getElementById('sketchfab-btn').addEventListener('click', () => {
+        sketchFabBrowser.showBrowser();
+    });
+*/
     document.getElementById('model-input').addEventListener('change', (e) => {
         if (e.target.files[0]) loadModel(e.target.files[0]);
     });
