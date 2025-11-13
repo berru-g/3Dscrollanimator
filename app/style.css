@@ -178,7 +178,7 @@ h1 {
 .viewer-container {
     flex: 1;
     position: relative;
-    background: #11111b;
+    background: rgba(17, 17, 27, 0.515);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1002,50 +1002,166 @@ select {
 
 /* Modal sketchfab */
 .sketchfab-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    z-index: 10000;
-    padding: 2rem 0;
-    overflow-y: auto;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.particles-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .sketchfab-modal {
-    background: var(--grey-light);
-    border-radius: 16px;
-    padding: 2rem;
-    max-width: 900px;
-    width: 95%;
-    max-height: 90vh;
-    overflow-y: auto;
+  position: relative;
+  background: rgba(27, 27, 28, 0.92);
+  border: 1px solid var(--grey-light);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  border-radius: 16px;
+  width: 80%;
+  max-width: 900px;
+  color: var(--text);
+  overflow: hidden;
+  transform: scale(0.9) translateY(20px);
+  opacity: 0;
+  z-index: 1;
+  animation: modalPop 0.5s ease forwards;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: var(--dark);
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--grey-light);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sketchfab-logo {
+  width: 28px;
+  height: 28px;
+  filter: brightness(1.1) contrast(1.2);
+}
+
+.close-modal {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--dark);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.close-modal:hover {
+  transform: rotate(90deg);
+}
+
+.search-section {
+  padding: 1.5rem;
+  background: var(--grey);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .search-bar {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+  display: flex;
+  flex: 1;
+  max-width: 600px;
+  background: var(--grey-light);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05);
 }
 
 .search-bar input {
-    flex: 1;
-    padding: 1rem;
-    border-radius: 8px;
-    border: 1px solid var(--grey);
-    background: var(--grey);
-    color: var(--text);
+  flex: 1;
+  padding: 0.8rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-btn {
+  background: var(--primary);
+  border: none;
+  padding: 0 1.2rem;
+  cursor: pointer;
+  color: var(--dark);
+  transition: background 0.3s;
+}
+
+.search-btn:hover {
+  background: var(--rose);
+}
+
+.filters select {
+  background: var(--grey-light);
+  border: 1px solid var(--grey-light);
+  padding: 0.8rem;
+  border-radius: 8px;
+  color: var(--text);
+  outline: none;
 }
 
 .models-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.models-grid .loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--rose);
+  font-size: 1.1rem;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalPop {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .model-card {

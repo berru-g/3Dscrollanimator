@@ -218,7 +218,7 @@ class GainAnimator {
     createParticles(amount, type) {
         const symbols = {
             points: '💎',
-            gems: '💎', 
+            gems: '💎',
             premium: '👑',
             coin: '🪙',
             star: '⭐'
@@ -233,7 +233,7 @@ class GainAnimator {
             particle.className = `gain-particle ${type}`;
             particle.textContent = text;
             particle.style.setProperty('--index', i);
-            
+
             this.container.appendChild(particle);
         }
 
@@ -382,7 +382,7 @@ class OnboardingGuide {
             {
                 element: document.querySelector('#import-btn'),
                 intro: '<strong>Étape 1 - Importer</strong><br> Commencez par importer votre modèle 3D au format glb ou gltf ou chargez le modèle de test.',
-                position: 'right' 
+                position: 'right'
             },
             {
                 element: document.querySelector('#position-controls'),
@@ -453,7 +453,7 @@ class OnboardingGuide {
         const steps = [
             'Étape 1: Cliquez sur "Importer un modèle"',
             'Étape 2: Ajoutez des keyframes avec le bouton +',
-            'Étape 3: Utilisez la règle pour tester l\'animation', 
+            'Étape 3: Utilisez la règle pour tester l\'animation',
             'Étape 4: Exportez votre code dans la section basse'
         ];
 
@@ -467,7 +467,7 @@ class OnboardingGuide {
     onComplete() {
         localStorage.setItem('onboarding_completed', 'true');
         notify.success('Guide terminé ! À vous de créer ', 'Bienvenue');
-        
+
         if (currentUser && !localStorage.getItem('onboarding_bonus_given')) {
             addPoints(25);
             localStorage.setItem('onboarding_bonus_given', 'true');
@@ -487,7 +487,7 @@ class OnboardingGuide {
 // Initialisation du guide au chargement
 let onboarding;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Attendre que l'UI soit complètement chargée
     setTimeout(() => {
         onboarding = new OnboardingGuide();
@@ -504,7 +504,7 @@ function addHelpButton() {
     helpBtn.className = 'btn-ghost help-guide-btn';
     helpBtn.innerHTML = 'Guide ?';
     helpBtn.style.marginLeft = '10px';
-    
+
     helpBtn.onclick = () => {
         if (onboarding) {
             onboarding.restart();
@@ -512,11 +512,11 @@ function addHelpButton() {
             notify.info('Importez un modèle → Ajoutez des keyframes → Testez → Exportez !', 'Guide rapide');
         }
     };
-    
+
     // Ajouter dans le header près de la navigation user
     const header = document.querySelector('header');
     const userMenu = document.querySelector('.user-menu, .guest-menu');
-    
+
     if (header && userMenu) {
         header.insertBefore(helpBtn, userMenu);
     } else if (header) {
@@ -1079,33 +1079,47 @@ class SketchFabBrowser {
     showBrowser() {
         const modalHTML = `
             <div class="sketchfab-modal-overlay">
-                <div class="sketchfab-modal">
-                    <div class="modal-header">
-                        <h3>Bibliothèque SketchFab</h3>
-                        <button class="close-btn" onclick="sketchFabBrowser.closeModal()">&times;</button>
-                    </div>
-                    
-                    <div class="search-bar">
-                        <input type="text" id="sketchfab-search" placeholder="Rechercher un modèle 3D...">
-                        <button class="search-btn"><i class="fas fa-search"></i></button>
-                    </div>
-                    
-                    <div class="filters">
-                        <select id="category-filter">
-                            <option value="">Toutes catégories</option>
-                            <option value="characters">Personnages</option>
-                            <option value="vehicles">Véhicules</option>
-                            <option value="architecture">Architecture</option>
-                        </select>
-                    </div>
-                    
-                    <div class="models-grid" id="models-grid">
-                        <div class="loading">Chargement des modèles populaires...</div>
-                    </div>
-                </div>
-            </div>
+  <div class="sketchfab-modal">
+    <div class="modal-header">
+      <div class="header-left">
+        <img
+          src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.sketchfab.com%2Fmodels%2Ff7fc220fcdf340f2b180b38eea90bc0e%2Fthumbnails%2F0da8216b3746496b9c32d13e39b6ed86%2F5fcd1d641ec54ac182c3dfdb386ef5c2.jpeg&f=1&nofb=1&ipt=bf0d8cb421893ce6f12f177b16a7fb4576b1261cd52f917d4236636a16f53fa5"
+          alt="Sketchfab Logo"
+          class="sketchfab-logo"
+        />
+        <h3>Bibliothèque Sketchfab</h3>
+      </div>
+      <button class="close-modal" id="closeModalBtn" aria-label="Fermer la fenêtre">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="search-section">
+      <div class="search-bar">
+        <input
+          type="text"
+          id="sketchfab-search"
+          placeholder="Rechercher un modèle 3D..."
+        />
+        <button class="search-btn"><i class="fas fa-search"></i></button>
+      </div>
+      <div class="filters">
+        <select id="category-filter">
+          <option value="">Toutes catégories</option>
+          <option value="characters">Personnages</option>
+          <option value="vehicles">Véhicules</option>
+          <option value="architecture">Architecture</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="models-grid" id="models-grid">
+      <div class="loading">Chargement des modèles populaires...</div>
+    </div>
+  </div>
+</div>
         `;
-        
+
         document.body.insertAdjacentHTML('beforeend', modalHTML);
         this.attachEventListeners();
         this.loadPopularModels();
@@ -1115,15 +1129,15 @@ class SketchFabBrowser {
         document.querySelector('.close-modal').addEventListener('click', () => {
             this.closeModal();
         });
-        
+
         document.querySelector('.search-btn').addEventListener('click', () => {
             this.search();
         });
-        
+
         document.getElementById('sketchfab-search').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.search();
         });
-        
+
         document.getElementById('category-filter').addEventListener('change', () => {
             this.search();
         });
@@ -1132,7 +1146,7 @@ class SketchFabBrowser {
     async search() {
         const query = document.getElementById('sketchfab-search').value;
         const category = document.getElementById('category-filter').value;
-        
+
         const grid = document.getElementById('models-grid');
         grid.innerHTML = '<div class="loading">Recherche en cours...</div>';
 
@@ -1144,9 +1158,9 @@ class SketchFabBrowser {
             });
 
             const response = await fetch(`${this.apiUrl}?${params}`);
-            
+
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            
+
             const data = await response.json();
             this.displayModels(data.results);
         } catch (error) {
@@ -1168,6 +1182,7 @@ class SketchFabBrowser {
             this.displayModels(data.results);
         } catch (error) {
             console.error('Erreur chargement modèles:', error);
+            notify.error('Erreur API', 'SketchFab');
         }
     }
 
@@ -1194,11 +1209,11 @@ class SketchFabBrowser {
                     </div>
                 </div>
             `;
-            
+
             modelCard.addEventListener('click', () => {
                 this.selectModel(model.uid);
             });
-            
+
             grid.appendChild(modelCard);
         });
     }
@@ -1206,7 +1221,7 @@ class SketchFabBrowser {
     async selectModel(modelId) {
         try {
             notify.info('Vérification du modèle...', 'SketchFab');
-            
+
             // Vérifier via le proxy
             const params = new URLSearchParams({
                 action: 'model',
@@ -1215,7 +1230,7 @@ class SketchFabBrowser {
 
             const response = await fetch(`${this.apiUrl}?${params}`);
             const model = await response.json();
-            
+
             if (model.download && model.download.gltf && model.download.gltf.url) {
                 // Téléchargement direct (le token est protégé par le proxy)
                 await this.downloadModelDirect(model.download.gltf.url, model.name);
@@ -1231,17 +1246,17 @@ class SketchFabBrowser {
     async downloadModelDirect(downloadUrl, modelName) {
         try {
             notify.info('Téléchargement en cours...', 'SketchFab');
-            
+
             // Téléchargement direct depuis Sketchfab (URL signée)
             const response = await fetch(downloadUrl);
-            
+
             if (!response.ok) throw new Error('Download failed');
-            
+
             const blob = await response.blob();
-            const file = new File([blob], `${modelName}.glb`, { 
-                type: 'model/gltf-binary' 
+            const file = new File([blob], `${modelName}.glb`, {
+                type: 'model/gltf-binary'
             });
-            
+
             if (typeof loadModel === 'function') {
                 loadModel(file);
                 this.closeModal();
@@ -1250,7 +1265,7 @@ class SketchFabBrowser {
                 console.error('Fonction loadModel non trouvée');
                 notify.error('Erreur de chargement dans le viewer', 'SketchFab');
             }
-            
+
         } catch (error) {
             console.error('Erreur téléchargement:', error);
             notify.error('Échec du téléchargement', 'SketchFab');
@@ -1812,11 +1827,11 @@ function setupEventListeners() {
     document.getElementById('import-btn').addEventListener('click', () => {
         document.getElementById('model-input').click();
     });
-/*
-    document.getElementById('sketchfab-btn').addEventListener('click', () => {
-        sketchFabBrowser.showBrowser();
-    });
-*/
+    /*
+        document.getElementById('sketchfab-btn').addEventListener('click', () => {
+            sketchFabBrowser.showBrowser();
+        });
+    */
     document.getElementById('model-input').addEventListener('change', (e) => {
         if (e.target.files[0]) loadModel(e.target.files[0]);
     });
@@ -3168,7 +3183,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Notification de mise à jour
-notify.success('Vous pourrez bientôt obtenir des packs 💎', 'Mise à jour');
+notify.info('Salut, bienvenue sur la Version Beta. Faites moi vos retours via la page contact. Merci', 'Beta testeur');
 
 /*
 const userName = document.querySelector('meta[name="user-name"]')?.content || 'invité';

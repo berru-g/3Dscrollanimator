@@ -69,7 +69,7 @@ function timeAgo($datetime)
         }
 
         .modern-header {
-            background: rgba(21, 21, 23, 0.95);
+            background: rgba(21, 21, 23, 0.1);
             /*#0a0718*/
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
