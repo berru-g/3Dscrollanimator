@@ -4,6 +4,17 @@
    - N'écrase aucune fonction existante ; expose un objet global minimal: window._3DEditor
    - Usage : appeler _3DEditor.open() ou cliquer le bouton '#open-3d-editor' si ajouté dans DOM
 */
+(async function ensureControls() {
+  if (!THREE.OrbitControls) {
+    const { OrbitControls } = await import('https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/OrbitControls.js');
+    THREE.OrbitControls = OrbitControls;
+  }
+  if (!THREE.TransformControls) {
+    const { TransformControls } = await import('https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/TransformControls.js');
+    THREE.TransformControls = TransformControls;
+  }
+})();
+
 (function(){
   if(window._3DEditor) return; // déjà initialisé
 

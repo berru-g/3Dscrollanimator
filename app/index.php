@@ -278,7 +278,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
                     3D</button>
 
 
-               <!-- <button class="btn btn-secondary" onclick="sketchFabBrowser.showBrowser()">
+                <!-- <button class="btn btn-secondary" onclick="sketchFabBrowser.showBrowser()">
                     <i class="fa-solid fa-cube"></i> Import SketchFab
                 </button>-->
 
@@ -549,7 +549,14 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.min.js"></script>
+    <script src="https://unpkg.com/three@0.161.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/examples/js/controls/TransformControls.js"></script>
+
+
     <script src="scriptV2.js"></script>
+    <script src="V2script.js"></script>
 
     <script>
         // Variable globale pour le chargement de projet
