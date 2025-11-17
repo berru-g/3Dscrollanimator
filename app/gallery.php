@@ -34,6 +34,17 @@ try {
     <title>Galerie - 3D Scroll Animator</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Hotjar Tracking Code for Site 5255556 (nom manquant) -->
+    <script>
+        (function (h, o, t, j, a, r) {
+            h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
+            h._hjSettings = { hjid: 5255556, hjsv: 6 };
+            a = o.getElementsByTagName('head')[0];
+            r = o.createElement('script'); r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    </script>
 </head>
 
 <body>
@@ -192,7 +203,7 @@ try {
     </main>
 
     <br>
-        <?php require_once 'footer.php'; ?>
+    <?php require_once 'footer.php'; ?>
 
     <script>
         function viewProject(projectId) {

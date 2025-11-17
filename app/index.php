@@ -140,6 +140,18 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
         gtag('config', 'G-1JTTQTPF3Q');
     </script>
 
+    <!-- Hotjar Tracking Code for Site 5255556 (nom manquant) -->
+    <script>
+        (function (h, o, t, j, a, r) {
+            h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
+            h._hjSettings = { hjid: 5255556, hjsv: 6 };
+            a = o.getElementsByTagName('head')[0];
+            r = o.createElement('script'); r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    </script>
+
 </head>
 
 <body>
@@ -557,6 +569,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
 
     <script src="scriptV2.js"></script>
     <script src="V2script.js"></script>
+
 
     <script>
         // Variable globale pour le chargement de projet
