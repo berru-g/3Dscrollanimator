@@ -5,6 +5,12 @@ Créez des animations 3D fluides synchronisées au scroll — no code tool.
 Importez votre modèle, définissez vos animations liés au pourcentage de scroll,
 exportez un package HTML/CSS/JS prêt à l'emploi ou ouvrez-le directement dans CodePen.
 
+
+### Plan archi
+
+<img width="4728" height="440" alt="diagram" src="https://github.com/user-attachments/assets/1a5942c0-35d7-466c-84e7-2dc2f7158d81" />
+
+
 ##### Model 3D crédit :
     - "Nike TC 7900 Sail" (https://skfb.ly/oF7pX) by SofiaWolfie is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
     - "TV01 Stage" (https://skfb.ly/pzJwO) by zHairezt is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
