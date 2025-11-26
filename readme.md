@@ -6,9 +6,6 @@ Importez votre modèle, définissez vos animations liés au pourcentage de scrol
 exportez un package HTML/CSS/JS prêt à l'emploi ou ouvrez-le directement dans CodePen.
 
 
-### Plan archi
-
-<img width="4728" height="440" alt="diagram" src="https://github.com/user-attachments/assets/1a5942c0-35d7-466c-84e7-2dc2f7158d81" />
 
 
 ##### Model 3D crédit :
@@ -226,3 +223,14 @@ Intégration Webflow / Framer
 Version mobile fluide
 
 Marketplace d’animations premium
+
+
+[Patch des vulnérabilité trouvé - En savoir plus via deepwiki](https://deepwiki.com/berru-g/3Dscrollanimator)
+
+
+### Schema du mvp
+
+<img width="4728" height="440" alt="diagram" src="https://github.com/user-attachments/assets/1a5942c0-35d7-466c-84e7-2dc2f7158d81" />
+
+
+
