@@ -151,7 +151,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
-            max-width: 500px;
+            max-width: 600px;
             background: white;
             color: var(--text-color);
             padding: 25px;

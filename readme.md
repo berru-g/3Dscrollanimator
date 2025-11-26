@@ -12,6 +12,8 @@ exportez un package HTML/CSS/JS prêt à l'emploi ou ouvrez-le directement dans 
     - "Fantasy Town" (https://skfb.ly/6ZUUF) by Eh is licensed under Creative Commons Attribution-NonCommercial (http://creativecommons.org/licenses/by-nc/4.0/).
     - "Gravesend Skatepark" (https://skfb.ly/oNunO) by artfletch is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 
+    https://models.readyplayer.me/691f00b1fb99478e4126e80d.glb
+
 
 #### Steps :
 
