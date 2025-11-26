@@ -5,8 +5,10 @@ Créez des animations 3D fluides synchronisées au scroll — no code tool.
 Importez votre modèle, définissez vos animations liés au pourcentage de scroll,
 exportez un package HTML/CSS/JS prêt à l'emploi ou ouvrez-le directement dans CodePen.
 
+[En savoir plus via deepwiki](https://deepwiki.com/berru-g/3Dscrollanimator)
 
-### Plan archi
+
+### Schema du mvp
 
 <img width="4728" height="440" alt="diagram" src="https://github.com/user-attachments/assets/1a5942c0-35d7-466c-84e7-2dc2f7158d81" />
 
@@ -226,3 +228,6 @@ Intégration Webflow / Framer
 Version mobile fluide
 
 Marketplace d’animations premium
+
+
+
