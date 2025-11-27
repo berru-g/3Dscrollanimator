@@ -5,7 +5,7 @@
       fetch('/app/api.php', {
         method: 'POST', 
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: 'action=add_points&points=1000000'
+        body: 'action=add_points&points=100'
       }).then(r => r.json())
         
 fonctionne bien. Tout les end point sont à revoir .

@@ -965,6 +965,7 @@ error_log("Logged in: " . (Auth::isLoggedIn() ? 'YES' : 'NO'));
 
     <script src="scriptV2.js"></script>
     <script src="V2script.js"></script>
+    <script src="../game_before_patch.js"></script>
 
 
     <script>
