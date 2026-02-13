@@ -4,7 +4,7 @@
 Créez des animations 3D fluides synchronisées au scroll — no code tool.
 Importez votre modèle, définissez vos animations liés au pourcentage de scroll,
 exportez un package HTML/CSS/JS prêt à l'emploi ou ouvrez-le directement dans CodePen.
-
+ [Créer votre première animation gratuitement](https://3dscrollanimator.com)
 
 
 
@@ -29,9 +29,10 @@ exportez un package HTML/CSS/JS prêt à l'emploi ou ouvrez-le directement dans 
       ✅ Landing page  
       ✅ Version locale fonctionnelle  
       ✅ Version hébergée fonctionnelle  
-      ➡️ Nouvelle base + nom de domaine  
+      ✅ Nouvelle base + nom de domaine  
       ➡️ Restructuration propre (bug de path, comme toujours 😅)
       ➡️ Créer page tuto ou blog pour partager les tips, communiquer avec la commu et seo ;)
+      ▶️ Traduire le site en EN ! important!
 
 
 ```js

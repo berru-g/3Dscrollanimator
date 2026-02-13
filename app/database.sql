@@ -1,6 +1,6 @@
 -- database.sql
-CREATE DATABASE IF NOT EXISTS u667977963_3Dscrollsaas;
-USE u667977963_3Dscrollsaas;
+CREATE DATABASE IF NOT EXISTS 3Dscrollsaas;
+USE 3Dscrollsaas;
 
 -- Table des utilisateurs
 CREATE TABLE users (

